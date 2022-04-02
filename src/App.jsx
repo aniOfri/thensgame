@@ -1,42 +1,33 @@
-import { useState } from 'react'
-import logo from './logo.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import SettlementsList from './data/settlements.json';
+
+function randInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+function getSettlement(){
+  let newSettlement;
+  newSettlement = SettlementsList[randInt(SettlementsList.length)];
+
+  return newSettlement;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [firstSettlement, setSettlement1] = useState(SettlementsList[0]);
+  const [secondSettlement, setSettlement2] = useState(SettlementsList[0]);
+  
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
+        <p>The Souther Norther Game</p>
         <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
+          <button type="button" onClick={() => {setSettlement1(getSettlement())}}>
+            Settlement
           </button>
         </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
+        <h1>{firstSettlement.cityLabel}</h1>
+        <h1>{firstSettlement.gps.split(" ")[1].replace(")", "")}</h1>
       </header>
     </div>
   )
