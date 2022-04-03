@@ -2,6 +2,15 @@
   text-align: center;
 }
 
+.title{
+  margin-top: 5%;  
+  margin-bottom: 0;
+}
+
+.streak{
+  margin-top: 0.2%;
+  margin-bottom: 12%;
+}
 
 .App-header {
   background-color: #282c34;
@@ -9,7 +18,37 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.wrapper {
+  display:flex;
+  justify-content: center;
+  flex-direction:row;
+  height: 150px;
+}
+
+.left{
+  position:absolute;
+  left: 0;
+  width: 50%;
+  z-index: 1;
+}
+
+.right{
+  position:absolute;
+  right: 0;
+  width: 50%;
+  z-index: 1;
+}
+
+.buttons{
+  flex-direction:row;
+  justify-content: center;
+  z-index: 2;
+}
+
+.buttons h6{
+  cursor:pointer;
 }

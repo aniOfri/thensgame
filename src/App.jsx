@@ -33,18 +33,24 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>The Souther Norther Game</p>
-        <p>Streak: {streak}</p>
-        <h1>{settlements[0].cityLabel}</h1>
-        <p>
-        <button type="button" onClick={() => {Choice(true)}}>
-            Norther
-          </button>
-          <button type="button" onClick={() => {Choice(false)}}>
-            Souther
-          </button>
-          </p>
-        <h1>{settlements[1].cityLabel}</h1>
+        <p className="title">משחק הצפון-דרום</p>
+        <p className="streak">ניקוד: {streak}</p>
+        <div className='wrapper'>
+          <div class="left">
+            <h1>{settlements[0].cityLabel}</h1>
+          </div>
+          <div className="buttons">
+          <h6 onClick={() => {Choice(true)}}>
+              צפוני
+            </h6>
+            <h6 type="button" onClick={() => {Choice(false)}}>
+              דרומי
+            </h6>
+            </div>
+          <div class="right">
+            <h1>{settlements[1].cityLabel}</h1>
+          </div>
+        </div>
       </header>
     </div>
   )
