@@ -6,22 +6,23 @@ function RandInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function GetSettlement(settle){
-  let newSettlement, top, bottom;
+function GetSettlement(){
+  let newSettlement1, newSettlement2, top, bottom;
   do{
-    newSettlement = SettlementsList[RandInt(SettlementsList.length)];
+    newSettlement1 = SettlementsList[RandInt(SettlementsList.length)];
+    newSettlement2 = SettlementsList[RandInt(SettlementsList.length)];
 
-    top = settle.gps.split(" ")[1].replace(")", "");
-    bottom = newSettlement.gps.split(" ")[1].replace(")", "");
+    top = newSettlement1.gps.split(" ")[1].replace(")", "");
+    bottom = newSettlement2.gps.split(" ")[1].replace(")", "");
   }
   while (Math.abs(top-bottom) < 0.05)
 
 
-  return [settle, newSettlement];
+  return [newSettlement1, newSettlement2];
 }
 
 function App() {
-  const [settlements, setSettlements] = useState(GetSettlement(SettlementsList[RandInt(SettlementsList.length)]));
+  const [settlements, setSettlements] = useState(GetSettlement());
   const [streak, setStreak] = useState(0);
 
   function Choice(north){

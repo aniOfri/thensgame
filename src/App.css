@@ -33,22 +33,26 @@ body{
   height: 150px;
 }
 
+h1{
+  width: fit-content;
+  display:inline-block; 
+  cursor:pointer;
+}
+
 .left{
   position:absolute;
   left: 0;
   width: 50%;
   z-index: 1;
-  transition: transform .2s; /* Animation */
 }
 
 .left h1{
-  transition: transform .2s; /* Animation */
+  transition: transform .2s;
 }
 
-.left:hover h1{
+.left h1:hover{
   transform: scale(1.2);
 }
-
 
 .right{
   position:absolute;
@@ -59,9 +63,9 @@ body{
 
 
 .right h1{
-  transition: transform .2s; /* Animation */
+  transition: transform .2s;
 }
 
-.right:hover h1{
+.right h1:hover{
   transform: scale(1.2);
 }
