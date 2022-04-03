@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import SettlementsList from './data/settlements.json';
+import SettlementsList from './data/data.json';
 
 function RandInt(max) {
   return Math.floor(Math.random() * max);
@@ -23,11 +23,18 @@ function GetSettlement(){
 
 function App() {
   const [settlements, setSettlements] = useState(GetSettlement());
+  const [chosen, setChosen] = useState(null);
   const [streak, setStreak] = useState(0);
+  const [pause, setPause] = useState(false);
 
   function Choice(north){
     let top = settlements[0].gps.split(" ")[1].replace(")", "");
     let bottom = settlements[1].gps.split(" ")[1].replace(")", "");
+
+    if (north)
+      setChosen(settlements[0])
+    else
+      setChosen(settlements[1])
 
     if (!north && top < bottom)
       setStreak(streak + 1);
@@ -36,9 +43,31 @@ function App() {
     else
       setStreak(0);
 
-    setSettlements(GetSettlement(settlements[1]))
+    setPause(true);
   }
-  
+
+  function nextRound(){
+    setSettlements(GetSettlement())
+    setPause(false);
+  }
+
+  if (pause){
+    return (
+      <div dir="rtl" className="App">
+      <header className="App-header">
+        <p className="title">משחק הצפון-דרום</p>
+        <p className="streak">ניקוד: {streak}</p>
+        <div className='wrapper'>
+          <h1>{chosen.cityLabel}</h1>
+        </div>
+          <p>{chosen.info}</p>
+          <button onClick={()=>{
+            nextRound()}}>שלב הבא</button>
+      </header>
+    </div>
+    )
+  }
+
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
