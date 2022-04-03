@@ -1,3 +1,7 @@
+body{
+  overflow:hidden;
+}
+
 .App {
   text-align: center;
 }
@@ -34,7 +38,17 @@
   left: 0;
   width: 50%;
   z-index: 1;
+  transition: transform .2s; /* Animation */
 }
+
+.left h1{
+  transition: transform .2s; /* Animation */
+}
+
+.left:hover h1{
+  transform: scale(1.2);
+}
+
 
 .right{
   position:absolute;
@@ -43,12 +57,11 @@
   z-index: 1;
 }
 
-.buttons{
-  flex-direction:row;
-  justify-content: center;
-  z-index: 2;
+
+.right h1{
+  transition: transform .2s; /* Animation */
 }
 
-.buttons h6{
-  cursor:pointer;
+.right:hover h1{
+  transform: scale(1.2);
 }

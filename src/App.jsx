@@ -7,8 +7,16 @@ function RandInt(max) {
 }
 
 function GetSettlement(settle){
-  let newSettlement;
-  newSettlement = SettlementsList[RandInt(SettlementsList.length)];
+  let newSettlement, top, bottom;
+  do{
+    newSettlement = SettlementsList[RandInt(SettlementsList.length)];
+
+    top = settle.gps.split(" ")[1].replace(")", "");
+    bottom = newSettlement.gps.split(" ")[1].replace(")", "");
+  }
+  while (Math.abs(top-bottom) < 0.05)
+
+
   return [settle, newSettlement];
 }
 
@@ -20,9 +28,9 @@ function App() {
     let top = settlements[0].gps.split(" ")[1].replace(")", "");
     let bottom = settlements[1].gps.split(" ")[1].replace(")", "");
 
-    if (north && top < bottom)
+    if (!north && top < bottom)
       setStreak(streak + 1);
-    else if (!north && top > bottom)
+    else if (north && top > bottom)
       setStreak(streak + 1);
     else
       setStreak(0);
@@ -31,24 +39,16 @@ function App() {
   }
   
   return (
-    <div className="App">
+    <div dir="rtl" className="App">
       <header className="App-header">
         <p className="title">משחק הצפון-דרום</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper'>
-          <div class="left">
-            <h1>{settlements[0].cityLabel}</h1>
+          <div className="left">
+            <h1 onClick={() => {Choice(true)}}>{settlements[0].cityLabel}  </h1>
           </div>
-          <div className="buttons">
-          <h6 onClick={() => {Choice(true)}}>
-              צפוני
-            </h6>
-            <h6 type="button" onClick={() => {Choice(false)}}>
-              דרומי
-            </h6>
-            </div>
-          <div class="right">
-            <h1>{settlements[1].cityLabel}</h1>
+          <div className="right">
+              <h1 onClick={() => {Choice(false)}}>{settlements[1].cityLabel}</h1>
           </div>
         </div>
       </header>
