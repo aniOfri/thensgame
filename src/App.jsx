@@ -58,16 +58,14 @@ function App() {
         <p className="title">משחק הצפון-דרום</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper'>
-          <h1>{chosen.cityLabel}</h1>
+          <h1  onClick={()=>{
+        nextRound()}}>{chosen.cityLabel}</h1>
         </div>
-          <p>{chosen.info}</p>
-          <button onClick={()=>{
-            nextRound()}}>שלב הבא</button>
+          <p href={"https://he.wikipedia.org/wiki/"+chosen.cityLabel}>{chosen.info}</p>
       </header>
     </div>
     )
   }
-
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
@@ -80,6 +78,7 @@ function App() {
           <div className="right">
               <h1 onClick={() => {Choice(false)}}>{settlements[1].cityLabel}</h1>
           </div>
+          
         </div>
       </header>
     </div>
