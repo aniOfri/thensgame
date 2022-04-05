@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import SettlementsList from './data/data.json';
+import SettlementsList from './data/data2.json';
 
 function RandInt(max) {
   return Math.floor(Math.random() * max);
@@ -10,17 +10,24 @@ function GetSettlement(){
   let newSettlement1, newSettlement2,   newSettlement3, closest, longt1, longt2, lat1, lat2;
 
   do{
-    newSettlement1 = SettlementsList[RandInt(SettlementsList.length)];
+    do
+      newSettlement1 = SettlementsList[RandInt(SettlementsList.length)];
+    while(newSettlement1.population < 10000)
+
+    do
     newSettlement2 = SettlementsList[RandInt(SettlementsList.length)];
+    while(newSettlement2.population < 10000)
 
     longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
     longt2 = newSettlement2.gps.split(" ")[1].replace(")", "");
   }
-  while (Math.abs(longt1-longt2) < 0.05)
+  while (Math.abs(longt1-longt2) < 0.06)
 
   let i = 0;
   do{
-    closest = SettlementsList[RandInt(SettlementsList.length)];
+    do
+      closest = SettlementsList[RandInt(SettlementsList.length)];
+    while(closest.population < 10000)
 
     longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
     longt2 = closest.gps.split(" ")[1].replace(")", "");
@@ -30,8 +37,9 @@ function GetSettlement(){
 
     i+=1;
   }
-  while ((Math.abs(longt1-longt2) > 0.1 || Math.abs(lat1-lat2) > 0.1 || longt1==longt2) && i < SettlementsList.length)
+  while ((Math.abs(longt1-longt2) > 0.04 || Math.abs(lat1-lat2) > 0.04 || longt1==longt2) && i < SettlementsList.length)
 
+  console.log(Math.abs(longt1-longt2),  Math.abs(lat1-lat2))
   let rnd = RandInt(2)+1
   if (rnd == 1){
     newSettlement3 = newSettlement2;
@@ -80,7 +88,6 @@ function App() {
     )
   }*/
 
-
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
@@ -90,11 +97,11 @@ function App() {
         <div className='wrapper'>
           <div className="left">
             <h1 onClick={() => {Choice(true)}}>{settlements[1].cityLabel}  </h1>
-            <p>{settlements[1].info}</p>
+            
           </div>
           <div className="right">
               <h1 onClick={() => {Choice(false)}}>{settlements[2].cityLabel}</h1>
-            <p>{settlements[2].info}</p>
+            
           </div>
         </div>
       </header>
