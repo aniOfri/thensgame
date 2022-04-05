@@ -13,10 +13,11 @@ body{
 
 .streak{
   margin-top: 0.2%;
-  margin-bottom: 12%;
+  margin-bottom: 5%;
 }
 
 .App-header {
+  cursor:default;
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -36,7 +37,9 @@ body{
 h1{
   width: fit-content;
   display:inline-block; 
-  cursor:pointer;
+}
+
+.titleCity{
 }
 
 .left{
@@ -47,6 +50,7 @@ h1{
 }
 
 .left h1{
+  cursor:pointer;
   transition: transform .2s;
 }
 
@@ -63,6 +67,7 @@ h1{
 
 
 .right h1{
+  cursor:pointer;
   transition: transform .2s;
 }
 
