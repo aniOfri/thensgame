@@ -6,38 +6,47 @@ function RandInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+
+function Duplicates(setts, j){
+  let duplicate = false;
+  for (let i = 0; i < j; i++)
+    if (setts[i] == setts[j]) duplicate = true;
+
+  return duplicate;
+}
+
 function GetSettlement(){
-  let newSettlement1, newSettlement2,   newSettlement3, closest, mostClosest, mostClosestLongt=0.04, mostClosestLat=0.04, longt1, longt2, lat1, lat2;
+  let setts=[], closest, mostClosest, mostClosestLongt=0.04, mostClosestLat=0.04, longt1, longt2, lat1, lat2;
 
+  setts[0] = SettlementsList[RandInt(SettlementsList.length)];
+  
+  for (let j = 1; j < 5; j++){
   do{
-    do
-      newSettlement1 = SettlementsList[RandInt(SettlementsList.length)];
-    while(newSettlement1.population < 10000)
+      do
+        setts[j] = SettlementsList[RandInt(SettlementsList.length)];
+      while(setts[j].population < 10000 || Duplicates(setts, j))
 
-    do
-    newSettlement2 = SettlementsList[RandInt(SettlementsList.length)];
-    while(newSettlement2.population < 10000)
+      longt1 = setts[0].gps.split(" ")[1].replace(")", "");
+      longt2 = setts[j].gps.split(" ")[1].replace(")", "");
+      
+      lat1 = setts[0].gps.split("(")[1].split(" ")[0];
+      lat2 = setts[j].gps.split("(")[1].split(" ")[0];
 
-    longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
-    longt2 = newSettlement2.gps.split(" ")[1].replace(")", "");
-    
-    lat1 = newSettlement1.gps.split("(")[1].split(" ")[0];
-    lat2 = newSettlement2.gps.split("(")[1].split(" ")[0];
-
+    }
+    while (Math.abs(longt1-longt2) < 0.06 || Math.abs(lat1-lat2) < 0.06)
   }
-  while (Math.abs(longt1-longt2) < 0.06 || Math.abs(lat1-lat2) < 0.06)
 
   let i = 0;
   let distExt = 0;
   do{
     closest = SettlementsList[i];
 
-    if (closest.population < 10000){
+    if (closest.population > 10000){
         
-      longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
+      longt1 = setts[0].gps.split(" ")[1].replace(")", "");
       longt2 = closest.gps.split(" ")[1].replace(")", "");
 
-      lat1 = newSettlement1.gps.split("(")[1].split(" ")[0];
+      lat1 = setts[0].gps.split("(")[1].split(" ")[0];
       lat2 = closest.gps.split("(")[1].split(" ")[0];
 
       if (Math.abs(longt1-longt2) < mostClosestLongt && Math.abs(lat1-lat2) < mostClosestLat && Math.abs(longt1-longt2) > 0)
@@ -58,54 +67,53 @@ function GetSettlement(){
   }
   while ((Math.abs(longt1-longt2) > 0.04+distExt || Math.abs(lat1-lat2) > 0.04+distExt || longt1==longt2))
 
-  console.log(Math.abs(longt1-longt2),  Math.abs(lat1-lat2))
-  let rnd = RandInt(2)+1
-  if (rnd == 1){
-    newSettlement3 = newSettlement2;
-    newSettlement2 = mostClosest;
-  }
-  else newSettlement3 = closest;
+  let rnd = RandInt(4)+1
+  setts[rnd] = mostClosest;
 
-
-  return [newSettlement1, newSettlement2, newSettlement3, rnd];
+  return [setts[0], setts[1], setts[2], setts[3], setts[4], rnd];
 }
 
 function App() {
   const [settlements, setSettlements] = useState(GetSettlement());
   //const [chosen, setChosen] = useState(null);
   const [streak, setStreak] = useState(0);
-  //const [pause, setPause] = useState(false);
+  const [pause, setPause] = useState(false);
 
-  function Choice(first){
+  function Choice(choice){
 
-    console.log(settlements[3])
-    if (first && settlements[3] == 1)
+    if (choice==1 && settlements[5] == 1)
       setStreak(streak + 1);
-    else if (!first && settlements[3] == 2)
+    else if (choice==2 && settlements[5] == 2)
+      setStreak(streak + 1);
+    else if (choice==3 && settlements[5] == 3)
+      setStreak(streak + 1);
+    else if (choice==4 && settlements[5] == 4)
       setStreak(streak + 1);
     else
       setStreak(0);
 
-      
-    setSettlements(GetSettlement())
-    //setPause(true);
+    setPause(true);
   }
 
+  function nextRound(){
+    setSettlements(GetSettlement())
+    setPause(false);
+  }
 
-  /*if (pause){
+  if (pause){
     return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
+        <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper'>
-          <h1  >{chosen.cityLabel}</h1>
+          <h1>{settlements[settlements[5]].cityLabel}</h1>
         </div>
-          <p href={"https://he.wikipedia.org/wiki/"+chosen.cityLabel}>{chosen.info}</p>
       </header>
     </div>
     )
-  }*/
+  }
 
   return (
     <div dir="rtl" className="App">
@@ -115,12 +123,12 @@ function App() {
         <h1 className="titleCity">{settlements[0].cityLabel}</h1>
         <div className='wrapper'>
           <div className="left">
-            <h1 onClick={() => {Choice(true)}}>{settlements[1].cityLabel}  </h1>
-            
+            <h1 onClick={() => {Choice(1)}}>{settlements[1].cityLabel}  </h1><br></br>
+            <h1 onClick={() => {Choice(2)}}>{settlements[2].cityLabel}  </h1>
           </div>
           <div className="right">
-              <h1 onClick={() => {Choice(false)}}>{settlements[2].cityLabel}</h1>
-            
+              <h1 onClick={() => {Choice(3)}}>{settlements[3].cityLabel}</h1><br></br>
+              <h1 onClick={() => {Choice(4  )}}>{settlements[4].cityLabel}</h1>
           </div>
         </div>
       </header>
