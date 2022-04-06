@@ -7,7 +7,7 @@ function RandInt(max) {
 }
 
 function GetSettlement(){
-  let newSettlement1, newSettlement2,   newSettlement3, closest, longt1, longt2, lat1, lat2;
+  let newSettlement1, newSettlement2,   newSettlement3, closest, mostClosest, mostClosestLongt=0.04, mostClosestLat=0.04, longt1, longt2, lat1, lat2;
 
   do{
     do
@@ -20,30 +20,49 @@ function GetSettlement(){
 
     longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
     longt2 = newSettlement2.gps.split(" ")[1].replace(")", "");
+    
+    lat1 = newSettlement1.gps.split("(")[1].split(" ")[0];
+    lat2 = newSettlement2.gps.split("(")[1].split(" ")[0];
+
   }
-  while (Math.abs(longt1-longt2) < 0.06)
+  while (Math.abs(longt1-longt2) < 0.06 || Math.abs(lat1-lat2) < 0.06)
 
   let i = 0;
+  let distExt = 0;
   do{
-    do
-      closest = SettlementsList[RandInt(SettlementsList.length)];
-    while(closest.population < 10000)
+    closest = SettlementsList[i];
 
-    longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
-    longt2 = closest.gps.split(" ")[1].replace(")", "");
+    if (closest.population < 10000){
+        
+      longt1 = newSettlement1.gps.split(" ")[1].replace(")", "");
+      longt2 = closest.gps.split(" ")[1].replace(")", "");
 
-    lat1 = newSettlement1.gps.split("(")[1].split(" ")[0];
-    lat2 = closest.gps.split("(")[1].split(" ")[0];
+      lat1 = newSettlement1.gps.split("(")[1].split(" ")[0];
+      lat2 = closest.gps.split("(")[1].split(" ")[0];
 
+      if (Math.abs(longt1-longt2) < mostClosestLongt && Math.abs(lat1-lat2) < mostClosestLat && Math.abs(longt1-longt2) > 0)
+      {
+          mostClosest = closest;
+          mostClosestLongt = Math.abs(longt1-longt2);
+          mostClosestLat = Math.abs(lat1-lat2);
+      }
+    }
     i+=1;
+    if (i > SettlementsList.length-1){
+      distExt += 0.01;
+      mostClosestLat = 0.04+distExt;
+      mostClosestLongt = 0.04+distExt;
+      i=0
+    }
+    console.log(i)
   }
-  while ((Math.abs(longt1-longt2) > 0.04 || Math.abs(lat1-lat2) > 0.04 || longt1==longt2) && i < SettlementsList.length)
+  while ((Math.abs(longt1-longt2) > 0.04+distExt || Math.abs(lat1-lat2) > 0.04+distExt || longt1==longt2))
 
   console.log(Math.abs(longt1-longt2),  Math.abs(lat1-lat2))
   let rnd = RandInt(2)+1
   if (rnd == 1){
     newSettlement3 = newSettlement2;
-    newSettlement2 = closest;
+    newSettlement2 = mostClosest;
   }
   else newSettlement3 = closest;
 
