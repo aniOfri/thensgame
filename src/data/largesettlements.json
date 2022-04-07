@@ -20,11 +20,6 @@
         "population": "114371"
     },
     {
-        "cityLabel": "גוש דן",
-        "gps": "Point(34.789471 32.076323)",
-        "population": "3713000"
-    },
-    {
         "cityLabel": "נהריה",
         "gps": "Point(35.0925 33.003611111)",
         "population": "60000"
@@ -123,16 +118,6 @@
         "cityLabel": "חולון",
         "gps": "Point(34.766666666 32.016666666)",
         "population": "188834"
-    },
-    {
-        "cityLabel": "נפת עכו",
-        "gps": "Point(35.1667 32.9167)",
-        "population": "615600"
-    },
-    {
-        "cityLabel": "נפת כנרת",
-        "gps": "Point(35.524722222 32.789722222)",
-        "population": "112100"
     },
     {
         "cityLabel": "רמת גן",

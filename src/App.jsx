@@ -20,9 +20,11 @@ function getCity(list){
   return list[RandInt(list.length)];
 }
 function GetSettlement(){
+  const minDist = 0.04;
+  const maxDist = 0.06;
   let list = LargeSettlementsList;
 
-  let setts=[], closest, mostClosest, mostClosestLongt=0.04, mostClosestLat=0.04, longt1, longt2, lat1, lat2;
+  let setts=[], closest, mostClosest, mostClosestLongt=minDist, mostClosestLat=minDist, longt1, longt2, lat1, lat2;
 
   setts[0] = getCity(list);
   
@@ -39,7 +41,7 @@ function GetSettlement(){
       lat2 = setts[j].gps.split("(")[1].split(" ")[0];
 
     }
-    while (Math.abs(longt1-longt2) < 0.06 || Math.abs(lat1-lat2) < 0.06)
+    while (Math.abs(longt1-longt2) < maxDist || Math.abs(lat1-lat2) < maxDist)
   }
 
   let i = 0;
@@ -64,14 +66,13 @@ function GetSettlement(){
     }
     i+=1;
     if (i > list.length-1){
-      distExt += 0.01;
-      mostClosestLat = 0.04+distExt;
-      mostClosestLongt = 0.04+distExt;
+      distExt += .01;
+      mostClosestLat = minDist+distExt;
+      mostClosestLongt = minDist+distExt;
       i=0
     }
-    console.log(i)
   }
-  while ((Math.abs(longt1-longt2) > 0.04+distExt || Math.abs(lat1-lat2) > 0.04+distExt || longt1==longt2))
+  while ((Math.abs(longt1-longt2) > minDist+distExt || Math.abs(lat1-lat2) > minDist+distExt || longt1==longt2))
 
   let rnd = RandInt(4)+1
   setts[rnd] = mostClosest;
