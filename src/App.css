@@ -39,12 +39,17 @@ h1{
   display:inline-block; 
 }
 
+.center{
+  display: flex;
+  flex-direction: column;
+}
+
 .center h1{
   cursor:pointer;
   transition: transform .2s;
 }
 
-.center h1:hover{
+.centerאבו h1:hover{
   transform: scale(1.2);
 }
 
@@ -79,4 +84,8 @@ h1{
 
 .right h1:hover{
   transform: scale(1.2);
+}
+
+.hidden{
+  display:none;
 }

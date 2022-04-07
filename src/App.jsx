@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import SettlementsList from './data/settlements.json';
 import LargeSettlementsList from './data/largesettlements.json';
@@ -15,6 +15,26 @@ function Duplicates(setts, j){
 
   return duplicate;
 }
+
+function calcCrow(lat1, lon1, lat2, lon2) 
+    {
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var lat1 = toRad(lat1);
+      var lat2 = toRad(lat2);
+
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+  function toRad(Value) 
+  {
+      return Value * Math.PI / 180;
+  }
 
 function getCity(list){
   return list[RandInt(list.length)];
@@ -108,6 +128,36 @@ function App() {
   }
 
   if (pause){
+    let longt1 = settlements[0].gps.split(" ")[1].replace(")", "");
+    let longt2 = settlements[settlements[5]].gps.split(" ")[1].replace(")", "");
+    let vert = longt1-longt2;
+
+    let lat1 = settlements[0].gps.split("(")[1].split(" ")[0];
+    let lat2 = settlements[settlements[5]].gps.split("(")[1].split(" ")[0];
+    let horz = lat1-lat2;
+
+    let keyword = ""
+    if (vert > 0){
+      keyword = "צפונה";
+      if (Math.abs(vert) < Math.abs(horz) && horz > 0){
+        keyword="מזרחה";
+      }
+      else if (Math.abs(vert) < Math.abs(horz) && horz < 0)
+      {
+        keyword="מערבה";
+      }
+    }
+    else{
+      keyword="דרומה";
+      if (Math.abs(vert) < Math.abs(horz) && horz > 0){
+        keyword="מזרחה";
+      }
+      else if (Math.abs(vert) < Math.abs(horz) && horz < 0)
+      {
+        keyword="מערבה";
+      }
+    }
+  
     return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
@@ -115,13 +165,14 @@ function App() {
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper center'>
-          <h1>{settlements[0].cityLabel} ⟷ {settlements[settlements[5]].cityLabel}</h1>
+          <h1>{settlements[0].cityLabel} {keyword} בערך {calcCrow(lat1, longt1, lat2, longt2).toFixed(2)} ק"מ מ{settlements[settlements[5]].cityLabel}</h1><br></br>
+          <p>{}</p>
         </div>
       </header>
     </div>
     )
   }
-
+else{
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
@@ -135,12 +186,13 @@ function App() {
           </div>
           <div className="right">
               <h1 onClick={() => {Choice(3)}}>{settlements[3].cityLabel}</h1><br></br>
-              <h1 onClick={() => {Choice(4  )}}>{settlements[4].cityLabel}</h1>
+              <h1 onClick={() => {Choice(4)}}>{settlements[4].cityLabel}</h1>
           </div>
         </div>
       </header>
     </div>
   )
+}
 }
 
 export default App
