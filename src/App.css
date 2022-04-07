@@ -39,7 +39,13 @@ h1{
   display:inline-block; 
 }
 
-.titleCity{
+.center h1{
+  cursor:pointer;
+  transition: transform .2s;
+}
+
+.center h1:hover{
+  transform: scale(1.2);
 }
 
 .left{

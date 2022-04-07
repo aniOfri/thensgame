@@ -1,0 +1,182 @@
+[
+    {
+        "cityLabel": "גבעתיים",
+        "gps": "Point(34.811666666 32.069722222)",
+        "population": "59518"
+    },
+    {
+        "cityLabel": "ירושלים",
+        "gps": "Point(35.216666666 31.783333333)",
+        "population": "919438"
+    },
+    {
+        "cityLabel": "אילת",
+        "gps": "Point(34.95 29.55)",
+        "population": "51935"
+    },
+    {
+        "cityLabel": "בית שמש",
+        "gps": "Point(34.988611111 31.751388888)",
+        "population": "114371"
+    },
+    {
+        "cityLabel": "גוש דן",
+        "gps": "Point(34.789471 32.076323)",
+        "population": "3713000"
+    },
+    {
+        "cityLabel": "נהריה",
+        "gps": "Point(35.0925 33.003611111)",
+        "population": "60000"
+    },
+    {
+        "cityLabel": "אום אל-פחם",
+        "gps": "Point(35.1525 32.515833333)",
+        "population": "55300"
+    },
+    {
+        "cityLabel": "כפר סבא",
+        "gps": "Point(34.907683333 32.185783333)",
+        "population": "100800"
+    },
+    {
+        "cityLabel": "חיפה",
+        "gps": "Point(34.983333333 32.8)",
+        "population": "281087"
+    },
+    {
+        "cityLabel": "באר שבע",
+        "gps": "Point(34.797777777 31.258888888)",
+        "population": "209000"
+    },
+    {
+        "cityLabel": "אשדוד",
+        "gps": "Point(34.650277777 31.797777777)",
+        "population": "220174"
+    },
+    {
+        "cityLabel": "בת ים",
+        "gps": "Point(34.750277777 32.023055555)",
+        "population": "128800"
+    },
+    {
+        "cityLabel": "רעננה",
+        "gps": "Point(34.866666666 32.183333333)",
+        "population": "74000"
+    },
+    {
+        "cityLabel": "בני ברק",
+        "gps": "Point(34.8338 32.08074)",
+        "population": "193774"
+    },
+    {
+        "cityLabel": "רהט",
+        "gps": "Point(34.754444444 31.3925)",
+        "population": "64462"
+    },
+    {
+        "cityLabel": "נצרת",
+        "gps": "Point(35.29785 32.702102777)",
+        "population": "83400"
+    },
+    {
+        "cityLabel": "פתח תקווה",
+        "gps": "Point(34.883333333 32.083333333)",
+        "population": "236169"
+    },
+    {
+        "cityLabel": "ראשון לציון",
+        "gps": "Point(34.8 31.95)",
+        "population": "249860"
+    },
+    {
+        "cityLabel": "נתניה",
+        "gps": "Point(34.856666666 32.328611111)",
+        "population": "217244"
+    },
+    {
+        "cityLabel": "אשקלון",
+        "gps": "Point(34.566388888 31.665833333)",
+        "population": "134454"
+    },
+    {
+        "cityLabel": "מודיעין עילית",
+        "gps": "Point(35.041666666 31.930555555)",
+        "population": "66847"
+    },
+    {
+        "cityLabel": "לוד",
+        "gps": "Point(34.9 31.95)",
+        "population": "75700"
+    },
+    {
+        "cityLabel": "קריית אתא",
+        "gps": "Point(35.1 32.8)",
+        "population": "55464"
+    },
+    {
+        "cityLabel": "רחובות",
+        "gps": "Point(34.807777777 31.891388888)",
+        "population": "132671"
+    },
+    {
+        "cityLabel": "חולון",
+        "gps": "Point(34.766666666 32.016666666)",
+        "population": "188834"
+    },
+    {
+        "cityLabel": "נפת עכו",
+        "gps": "Point(35.1667 32.9167)",
+        "population": "615600"
+    },
+    {
+        "cityLabel": "נפת כנרת",
+        "gps": "Point(35.524722222 32.789722222)",
+        "population": "112100"
+    },
+    {
+        "cityLabel": "רמת גן",
+        "gps": "Point(34.823541 32.070007)",
+        "population": "152596"
+    },
+    {
+        "cityLabel": "הוד השרון",
+        "gps": "Point(34.883333333 32.15)",
+        "population": "56659"
+    },
+    {
+        "cityLabel": "ראש העין",
+        "gps": "Point(34.95 32.083333333)",
+        "population": "56300"
+    },
+    {
+        "cityLabel": "מודיעין־מכבים־רעות",
+        "gps": "Point(34.985555555 31.933888888)",
+        "population": "90013"
+    },
+    {
+        "cityLabel": "תל אביב-יפו",
+        "gps": "Point(34.78 32.08)",
+        "population": "451523"
+    },
+    {
+        "cityLabel": "חדרה",
+        "gps": "Point(34.916666666 32.45)",
+        "population": "91708"
+    },
+    {
+        "cityLabel": "נס ציונה",
+        "gps": "Point(34.8 31.933333333)",
+        "population": "50200"
+    },
+    {
+        "cityLabel": "הרצליה",
+        "gps": "Point(34.842222222 32.155555555)",
+        "population": "93989"
+    },
+    {
+        "cityLabel": "רמלה",
+        "gps": "Point(34.8625 31.9275)",
+        "population": "75500"
+    }
+]

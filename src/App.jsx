@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import SettlementsList from './data/data2.json';
+import SettlementsList from './data/settlements.json';
+import LargeSettlementsList from './data/largesettlements.json';
 
 function RandInt(max) {
   return Math.floor(Math.random() * max);
@@ -15,15 +16,20 @@ function Duplicates(setts, j){
   return duplicate;
 }
 
+function getCity(list){
+  return list[RandInt(list.length)];
+}
 function GetSettlement(){
+  let list = LargeSettlementsList;
+
   let setts=[], closest, mostClosest, mostClosestLongt=0.04, mostClosestLat=0.04, longt1, longt2, lat1, lat2;
 
-  setts[0] = SettlementsList[RandInt(SettlementsList.length)];
+  setts[0] = getCity(list);
   
   for (let j = 1; j < 5; j++){
   do{
       do
-        setts[j] = SettlementsList[RandInt(SettlementsList.length)];
+        setts[j] = getCity(list);
       while(setts[j].population < 10000 || Duplicates(setts, j))
 
       longt1 = setts[0].gps.split(" ")[1].replace(")", "");
@@ -39,7 +45,7 @@ function GetSettlement(){
   let i = 0;
   let distExt = 0;
   do{
-    closest = SettlementsList[i];
+    closest = list[i];
 
     if (closest.population > 10000){
         
@@ -57,7 +63,7 @@ function GetSettlement(){
       }
     }
     i+=1;
-    if (i > SettlementsList.length-1){
+    if (i > list.length-1){
       distExt += 0.01;
       mostClosestLat = 0.04+distExt;
       mostClosestLongt = 0.04+distExt;
@@ -107,8 +113,8 @@ function App() {
       <header className="App-header">
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
-        <div className='wrapper'>
-          <h1>{settlements[settlements[5]].cityLabel}</h1>
+        <div className='wrapper center'>
+          <h1>{settlements[0].cityLabel} ⟷ {settlements[settlements[5]].cityLabel}</h1>
         </div>
       </header>
     </div>
