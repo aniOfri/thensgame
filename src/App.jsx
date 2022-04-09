@@ -114,26 +114,42 @@ function GetSettlement(){
 
 function App() {
   const [settlements, setSettlements] = useState(GetSettlement());
-  //const [chosen, setChosen] = useState(null);
+  const [choice, setChoice] = useState(0);
+  const [correct, setCorrect] = useState(false);
   const [streak, setStreak] = useState(0);
   const [pause, setPause] = useState(false);
 
   function Choice(choice){
+    setChoice(choice);
 
-    if (choice==1 && settlements[1] == 1)
+    if (choice==1 && settlements[1] == 1){
       setStreak(streak + 1);
-    else if (choice==2 && settlements[1] == 2)
+      setCorrect(true)
+    }
+    else if (choice==2 && settlements[1] == 2){
       setStreak(streak + 1);
-    else if (choice==3 && settlements[1] == 3)
+      setCorrect(true)
+    }
+    else if (choice==3 && settlements[1] == 3){
       setStreak(streak + 1);
-    else if (choice==4 && settlements[1] == 4)
+      setCorrect(true)
+    }
+    else if (choice==4 && settlements[1] == 4){
       setStreak(streak + 1);
-    else if (choice==5 && settlements[1] == 5)
+      setCorrect(true)
+    }
+    else if (choice==5 && settlements[1] == 5){
       setStreak(streak + 1);
-    else if (choice==6 && settlements[1] == 6)
+      setCorrect(true)
+    }
+    else if (choice==6 && settlements[1] == 6){
       setStreak(streak + 1);
-    else
+      setCorrect(true)
+    }
+    else{
       setStreak(0);
+      setCorrect(false)
+    }
 
     setPause(true);
   }
@@ -174,7 +190,7 @@ function App() {
       }
     }
 
-    return keyword+" בערך "+calcCrow(lat1, longt1, lat2, longt2).toFixed(2)+" ק\"מ מ"+dest.cityLabel;
+    return "נמצאת "+keyword+" בערך "+Math.round(calcCrow(lat1, longt1, lat2, longt2))+" ק\"מ מ"+dest.cityLabel;
   }
 
   if (pause){
@@ -188,6 +204,12 @@ function App() {
     
     let sentence2 = Sentence(settlements[0][0], settlements[0][settlements[1]]);
   
+    let className_ = "fail", answer = "לא נכונה.. נפסלת.";
+    if (correct){
+      className_ = "success"
+      answer = "נכונה! +נקודה!"
+    }
+
     return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
@@ -195,6 +217,7 @@ function App() {
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper center'>
+          <p className={className_}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
           <h1>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
           <p>{}</p>
         </div>
@@ -210,7 +233,7 @@ else{
       <header className="App-header">
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
-        <h1 className="titleCity">{settlements[0][0].cityLabel}</h1>
+        <h1 className="titleCity">איזה עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
         <div className='wrapper'>
           <div className="left">
             <h1 onClick={() => {Choice(1)}}>{settlements[0][1].cityLabel}  </h1><br></br>
