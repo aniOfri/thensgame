@@ -16,8 +16,7 @@ function Duplicates(setts, j){
   return duplicate;
 }
 
-function calcCrow(lat1, lon1, lat2, lon2) 
-    {
+function calcCrow(lat1, lon1, lat2, lon2) {
       var R = 6371; // km
       var dLat = toRad(lat2-lat1);
       var dLon = toRad(lon2-lon1);
@@ -29,12 +28,47 @@ function calcCrow(lat1, lon1, lat2, lon2)
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
       var d = R * c;
       return d;
-    }
+}
 
-  function toRad(Value) 
-  {
+function toRad(Value)  {
       return Value * Math.PI / 180;
+}
+
+function getClosest(dest, list, minDist=0.04){
+  let closest, mostClosest, mostClosestLongt=minDist, mostClosestLat=minDist;
+  let longt1, longt2, lat1, lat2;
+  let i = 0;
+  let distExt = 0;
+  do{
+    closest = list[i];
+
+    if (closest.population > 10000){
+        
+      longt1 = dest.gps.split(" ")[1].replace(")", "");
+      longt2 = closest.gps.split(" ")[1].replace(")", "");
+
+      lat1 = dest.gps.split("(")[1].split(" ")[0];
+      lat2 = closest.gps.split("(")[1].split(" ")[0];
+
+      if (Math.abs(longt1-longt2) < mostClosestLongt && Math.abs(lat1-lat2) < mostClosestLat && Math.abs(longt1-longt2) > 0)
+      {
+          mostClosest = closest;
+          mostClosestLongt = Math.abs(longt1-longt2);
+          mostClosestLat = Math.abs(lat1-lat2);
+      }
+    }
+    i+=1;
+    if (i > list.length-1){
+      distExt += .01;
+      mostClosestLat = minDist+distExt;
+      mostClosestLongt = minDist+distExt;
+      i=0
+    }
   }
+  while ((Math.abs(longt1-longt2) > minDist+distExt || Math.abs(lat1-lat2) > minDist+distExt || longt1==longt2))
+
+  return mostClosest;
+}
 
 function getCity(list){
   return list[RandInt(list.length)];
@@ -42,9 +76,9 @@ function getCity(list){
 function GetSettlement(){
   const minDist = 0.04;
   const maxDist = 0.06;
-  let list = SettlementsList;
+  const list = SettlementsList;
 
-  let setts=[], closest, mostClosest, mostClosestLongt=minDist, mostClosestLat=minDist, longt1, longt2, lat1, lat2;
+  let setts=[], mostClosest, longt1, longt2, lat1, lat2;
 
   setts[0] = getCity(list);
   
@@ -65,35 +99,7 @@ function GetSettlement(){
     while (Math.abs(longt1-longt2) < maxDist || Math.abs(lat1-lat2) < maxDist)
   }
 
-  let i = 0;
-  let distExt = 0;
-  do{
-    closest = list[i];
-
-    if (closest.population > 10000){
-        
-      longt1 = setts[0].gps.split(" ")[1].replace(")", "");
-      longt2 = closest.gps.split(" ")[1].replace(")", "");
-
-      lat1 = setts[0].gps.split("(")[1].split(" ")[0];
-      lat2 = closest.gps.split("(")[1].split(" ")[0];
-
-      if (Math.abs(longt1-longt2) < mostClosestLongt && Math.abs(lat1-lat2) < mostClosestLat && Math.abs(longt1-longt2) > 0)
-      {
-          mostClosest = closest;
-          mostClosestLongt = Math.abs(longt1-longt2);
-          mostClosestLat = Math.abs(lat1-lat2);
-      }
-    }
-    i+=1;
-    if (i > list.length-1){
-      distExt += .01;
-      mostClosestLat = minDist+distExt;
-      mostClosestLongt = minDist+distExt;
-      i=0
-    }
-  }
-  while ((Math.abs(longt1-longt2) > minDist+distExt || Math.abs(lat1-lat2) > minDist+distExt || longt1==longt2))
+  mostClosest = getClosest(setts[0], list, minDist);
 
   let index;
   index = setts.indexOf(mostClosest);
@@ -137,13 +143,13 @@ function App() {
     setPause(false);
   }
 
-  if (pause){
-    let longt1 = settlements[0][0].gps.split(" ")[1].replace(")", "");
-    let longt2 = settlements[0][settlements[1]].gps.split(" ")[1].replace(")", "");
+  function Sentence(orig, dest){
+    let longt1 = orig.gps.split(" ")[1].replace(")", "");
+    let longt2 = dest.gps.split(" ")[1].replace(")", "");
     let vert = longt1-longt2;
 
-    let lat1 = settlements[0][0].gps.split("(")[1].split(" ")[0];
-    let lat2 = settlements[0][settlements[1]].gps.split("(")[1].split(" ")[0];
+    let lat1 = orig.gps.split("(")[1].split(" ")[0];
+    let lat2 = dest.gps.split("(")[1].split(" ")[0];
     let horz = lat1-lat2;
 
     let keyword = ""
@@ -167,6 +173,20 @@ function App() {
         keyword="מערבה";
       }
     }
+
+    return keyword+" בערך "+calcCrow(lat1, longt1, lat2, longt2).toFixed(2)+" ק\"מ מ"+dest.cityLabel;
+  }
+
+  if (pause){
+    let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList)
+    
+    let sentence1;
+    if (closestLargeSettlement.cityLabel != settlements[0][settlements[1]].cityLabel)
+      sentence1 = "ו"+ Sentence(settlements[0][0], closestLargeSettlement);
+    else
+      sentence1 = "";
+    
+    let sentence2 = Sentence(settlements[0][0], settlements[0][settlements[1]]);
   
     return (
       <div dir="rtl" className="App" onClick={()=>{
@@ -175,7 +195,7 @@ function App() {
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper center'>
-          <h1>{settlements[0][0].cityLabel} {keyword} בערך {calcCrow(lat1, longt1, lat2, longt2).toFixed(2)} ק"מ מ{settlements[0][settlements[1]].cityLabel}</h1><br></br>
+          <h1>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
           <p>{}</p>
         </div>
       </header>
