@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-	"heroku-postbuild": "export NPM_CONFIG_PRODUCTION=false; npm install && npm run build"
+	"heroku-postbuild": "export NPM_CONFIG_PRODUCTION=false; npm install && npm run build",
     "start": "vite --port $PORT",
     "dev": "vite",
     "build": "vite build",
