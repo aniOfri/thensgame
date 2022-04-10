@@ -220,12 +220,22 @@ function Choice(choice){
     
     let sentence2 = Sentence(settlements[0][0], settlements[0][settlements[1]]);
   
-    let className_ = "fail", answer = "לא נכונה.. נפסלת.";
+    let indicator = "fail", answer = "לא נכונה.. נפסלת.";
     if (correct){
-      className_ = "success"
+      indicator = "success"
       answer = "נכונה! +נקודה!"
     }
 
+    const isMobile = width <= 768;
+
+    let information;
+    if (isMobile){
+        information = "infoMobile";
+    }
+    else{
+      information = "infoHorz";
+    }
+    
     return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
@@ -233,8 +243,8 @@ function Choice(choice){
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapper center'>
-          <p className={className_}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
-          <h1>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
+          <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
+          <h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
           <p>{}</p>
         </div>
       </header>
