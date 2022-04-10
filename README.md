@@ -1,2 +1,2 @@
 # thesngame
-Which israeli settlements is closer?
+Which israeli settlements is nearest?
