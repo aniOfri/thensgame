@@ -1,2 +1,2 @@
 # thesngame
-The Souther Norther Game
+Which israeli settlements is closer?
