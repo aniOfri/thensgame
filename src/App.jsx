@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import SettlementsList from './data/settlements.json';
 import LargeSettlementsList from './data/largesettlements.json';
@@ -123,8 +123,20 @@ function App() {
   const [correct, setCorrect] = useState(false);
   const [streak, setStreak] = useState(0);
   const [pause, setPause] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
 
-  function Choice(choice){
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+}
+
+useEffect(() => {
+  window.addEventListener('resize', handleWindowSizeChange);
+  return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+  }
+}, []);
+
+function Choice(choice){
     setChoice(choice);
 
     if (choice==1 && settlements[1] == 1){
@@ -230,23 +242,37 @@ function App() {
     )
   }
 else{
-  
+  const isMobile = width <= 768;
+
+  let firstClass, secondClass, thirdClass, wrapper;
+  if (isMobile){
+      firstClass = "top";
+      secondClass = "middleVert";
+      thirdClass = "bottom";
+      wrapper = "wrapper mobile";
+  }
+  else{
+    firstClass = "left";
+    secondClass = "middle";
+    thirdClass = "right";
+    wrapper = "wrapper horz";
+  }
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <h1 className="titleCity">איזה עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
-        <div className='wrapper'>
-          <div className="left">
+        <div className={wrapper}>
+          <div className={firstClass}>
             <h1 onClick={() => {Choice(1)}}>{settlements[0][1].cityLabel}  </h1><br></br>
             <h1 onClick={() => {Choice(2)}}>{settlements[0][2].cityLabel}  </h1>
           </div>
-          <div className="middle">
+          <div className={secondClass}>
             <h1 onClick={() => {Choice(3)}}>{settlements[0][3].cityLabel}  </h1><br></br>
             <h1 onClick={() => {Choice(4)}}>{settlements[0][4].cityLabel}  </h1>
           </div>
-          <div className="right">
+          <div className={thirdClass}>
               <h1 onClick={() => {Choice(5)}}>{settlements[0][5].cityLabel}</h1><br></br>
               <h1 onClick={() => {Choice(6)}}>{settlements[0][6].cityLabel}</h1>
           </div>
