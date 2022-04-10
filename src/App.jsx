@@ -39,11 +39,12 @@ function getClosest(dest, list, minDist=0.04){
   let longt1, longt2, lat1, lat2;
   let i = 0;
   let distExt = 0;
+
+  let run = true;
   do{
     closest = list[i];
 
-    if (closest.population > 10000){
-        
+    if (closest.population > 1000){
       longt1 = dest.gps.split(" ")[1].replace(")", "");
       longt2 = closest.gps.split(" ")[1].replace(")", "");
 
@@ -62,10 +63,14 @@ function getClosest(dest, list, minDist=0.04){
       distExt += .01;
       mostClosestLat = minDist+distExt;
       mostClosestLongt = minDist+distExt;
-      i=0
+      i=0;
+
+      if (mostClosest != undefined){
+        run = false;
+      }
     }
   }
-  while ((Math.abs(longt1-longt2) > minDist+distExt || Math.abs(lat1-lat2) > minDist+distExt || longt1==longt2))
+  while (run)
 
   return mostClosest;
 }
@@ -195,7 +200,6 @@ function App() {
 
   if (pause){
     let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList)
-    
     let sentence1;
     if (closestLargeSettlement.cityLabel != settlements[0][settlements[1]].cityLabel)
       sentence1 = "ו"+ Sentence(settlements[0][0], closestLargeSettlement);
@@ -226,7 +230,6 @@ function App() {
     )
   }
 else{
-  console.log(settlements[0])
   
   return (
     <div dir="rtl" className="App">
