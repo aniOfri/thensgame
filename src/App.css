@@ -29,6 +29,7 @@ body{
 }
 
 .fail{
+  margin-top:10%;
   color: #e84135;
   font-size: 20px;
   font-weight: bold;
@@ -36,6 +37,7 @@ body{
 
 
 .success{
+  margin-top: 10%;
   color: #1f8504;
   font-size: 20px;
   font-weight: bold;
