@@ -44,7 +44,7 @@ function getClosest(dest, list, minDist=0.04){
   do{
     closest = list[i];
 
-    if (closest.population > 1000){
+    if (closest.population > 10000){
       longt1 = dest.gps.split(" ")[1].replace(")", "");
       longt2 = closest.gps.split(" ")[1].replace(")", "");
 
@@ -85,7 +85,10 @@ function GetSettlement(){
 
   let setts=[], mostClosest, longt1, longt2, lat1, lat2;
 
-  setts[0] = getCity(list);
+  do{
+    setts[0] = getCity(list);
+  }
+  while(setts[0].population < 10000)
   
   for (let j = 1; j < 7; j++){
   do{
@@ -230,12 +233,13 @@ function Choice(choice){
 
     let information;
     if (isMobile){
+        indicator += " indicatorMobile";
         information = "infoMobile";
     }
     else{
       information = "infoHorz";
     }
-    
+
     return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>

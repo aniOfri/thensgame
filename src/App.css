@@ -29,7 +29,6 @@ body{
 }
 
 .fail{
-  margin-top: 120%;
   color: #e84135;
   font-size: 20px;
   font-weight: bold;
@@ -37,10 +36,13 @@ body{
 
 
 .success{
-  margin-top: 130%;
   color: #1f8504;
   font-size: 20px;
   font-weight: bold;
+}
+
+.indicatorMobile{
+  margin-top: 125%;
 }
 
 .wrapper {
