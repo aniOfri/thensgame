@@ -244,6 +244,7 @@ function Choice(choice){
 
     let information;
     if (isMobile){
+        indicator += " indicatorMobile"
         information = "infoMobile";
     }
     else{
