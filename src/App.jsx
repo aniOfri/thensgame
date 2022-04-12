@@ -254,7 +254,7 @@ function Choice(choice){
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
-        <p className="title">איזה עיר יותר קרובה?</p>
+        <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <div className='wrapperPause center'>
           <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
@@ -289,7 +289,7 @@ else{
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
-        <p className="title">איזה עיר יותר קרובה?</p>
+        <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <h1 className="titleCity">איזה עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
         <div className={wrapper}>
