@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const {createServer: createViteServer} = require('vite');
 const path = require("path");
+const forceSsl = require('force-ssl-heroku');
 
 const createServer = async () =>
 {
@@ -14,6 +15,8 @@ const createServer = async () =>
 	});
 
 	app.use(vite.middlewares);
+	
+	app.use(forceSsl);
 
 	app.use(express.static(path.join(__dirname, 'dist')));
 
