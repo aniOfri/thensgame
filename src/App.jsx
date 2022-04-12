@@ -140,9 +140,11 @@ function App() {
   const [streak, setStreak] = useState(0);
   const [pause, setPause] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
 
-  function handleWindowSizeChange() {
+function handleWindowSizeChange() {
     setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
 }
 
 useEffect(() => {
@@ -238,24 +240,23 @@ function Choice(choice){
       answer = "נכונה! +נקודה!"
     }
 
-    const isMobile = width <= 768;
+    const isMobile = width <= 520;
 
     let information;
     if (isMobile){
-        indicator += " indicatorMobile";
         information = "infoMobile";
     }
     else{
       information = "infoHorz";
     }
 
-    return (
+  return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
         <p className="title">איזה עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
-        <div className='wrapper center'>
+        <div className='wrapperPause center'>
           <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
           <h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
           <p>{}</p>
@@ -265,7 +266,8 @@ function Choice(choice){
     )
   }
 else{
-  const isMobile = width <= 768;
+  const isMobile = width <= 520;
+  const mobileHeight = height <= 600;
 
   let firstClass, secondClass, thirdClass, wrapper;
   if (isMobile){
@@ -279,6 +281,10 @@ else{
     secondClass = "middle";
     thirdClass = "right";
     wrapper = "wrapper horz";
+  }
+
+  if (mobileHeight){
+    wrapper += " sizeDownText";
   }
   return (
     <div dir="rtl" className="App">
