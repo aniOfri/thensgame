@@ -61,7 +61,7 @@ body{
 
 .horz{
   flex-direction:row;
-  font-size: 2vmax;
+  font-size: 1.2vmax;
 }
 
 .mobile{
