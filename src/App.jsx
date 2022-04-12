@@ -16,6 +16,19 @@ function Duplicates(setts, j){
   return duplicate;
 }
 
+function Unfresh(sett, lastRound){
+  if (lastRound[0] == null)
+    return false;
+  else{
+    let refreshed = false;
+    for (let i=0; i<lastRound.length; i++){
+      if (sett == lastRound[i]) refreshed = true;
+    }
+
+    return refreshed;
+  }
+}
+
 function calcCrow(lat1, lon1, lat2, lon2) {
       var R = 6371; // km
       var dLat = toRad(lat2-lat1);
@@ -78,7 +91,7 @@ function getClosest(dest, list, minDist=0.04){
 function getCity(list){
   return list[RandInt(list.length)];
 }
-function GetSettlement(){
+function GetSettlement(lastRound){
   const minDist = 0.04;
   const maxDist = 0.06;
   const list = SettlementsList;
@@ -88,14 +101,14 @@ function GetSettlement(){
   do{
     setts[0] = getCity(list);
   }
-  while(setts[0].population < 10000)
-  
+  while(setts[0].population < 10000 || Unfresh(setts[0], lastRound))
+
   for (let j = 1; j < 7; j++){
   do{
       do{
         setts[j] = getCity(list);
       }
-      while(setts[j].population < 10000 || Duplicates(setts, j))
+      while(setts[j].population < 10000 || Duplicates(setts, j) || Unfresh(setts[j], lastRound))
 
       longt1 = setts[0].gps.split(" ")[1].replace(")", "");
       longt2 = setts[j].gps.split(" ")[1].replace(")", "");
@@ -121,7 +134,7 @@ function GetSettlement(){
 }
 
 function App() {
-  const [settlements, setSettlements] = useState(GetSettlement());
+  const [settlements, setSettlements] = useState(GetSettlement([null]));
   const [choice, setChoice] = useState(0);
   const [correct, setCorrect] = useState(false);
   const [streak, setStreak] = useState(0);
@@ -142,32 +155,26 @@ useEffect(() => {
 function Choice(choice){
     setChoice(choice);
 
+    setCorrect(true)
     if (choice==1 && settlements[1] == 1){
       setStreak(streak + 1);
-      setCorrect(true)
     }
     else if (choice==2 && settlements[1] == 2){
       setStreak(streak + 1);
-      setCorrect(true)
     }
     else if (choice==3 && settlements[1] == 3){
       setStreak(streak + 1);
-      setCorrect(true)
     }
     else if (choice==4 && settlements[1] == 4){
       setStreak(streak + 1);
-      setCorrect(true)
     }
     else if (choice==5 && settlements[1] == 5){
       setStreak(streak + 1);
-      setCorrect(true)
     }
     else if (choice==6 && settlements[1] == 6){
       setStreak(streak + 1);
-      setCorrect(true)
     }
     else{
-      setStreak(0);
       setCorrect(false)
     }
 
@@ -175,8 +182,10 @@ function Choice(choice){
   }
 
   function nextRound(){
-    setSettlements(GetSettlement())
+    setSettlements(GetSettlement(settlements[0]))
     setPause(false);
+    if (!correct)
+      setStreak(0);
   }
 
   function Sentence(orig, dest){
