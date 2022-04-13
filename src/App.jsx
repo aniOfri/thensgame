@@ -94,7 +94,7 @@ function getClosest(dest, list, minDist=0.04, score=0){
 function getCity(list){
   return list[RandInt(list.length)];
 }
-function GetSettlement(lastRound, score){
+function GetSettlement(lastRound, score, lastSetts){
   const minDist = 0.04+score/1000;
   const maxDist = 0.06+score/1000;
   const list = SettlementsList;
@@ -107,7 +107,7 @@ function GetSettlement(lastRound, score){
   do{
     setts[0] = getCity(list);
   }
-  while(setts[0].population < 50000 - score*1000 || Unfresh(setts[0], lastRound))
+  while(setts[0].population < 50000 - score*1000 || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
 
   for (let j = 1; j < 7; j++){
   do{
@@ -141,7 +141,8 @@ function GetSettlement(lastRound, score){
 
 function App() {
   const [streak, setStreak] = useState(0);
-  const [settlements, setSettlements] = useState(GetSettlement([null], streak));
+  const [lastSettlements, setLastSetts] = useState([null]);
+  const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements));
   const [choice, setChoice] = useState(0);
   const [correct, setCorrect] = useState(false);
   const [pause, setPause] = useState(false);
@@ -159,6 +160,19 @@ useEffect(() => {
       window.removeEventListener('resize', handleWindowSizeChange);
   }
 }, []);
+
+function updateLastSettlements(lastPlay){
+  let lastSetts = lastSettlements;
+  if (lastSetts[0] == null)
+    lastSetts[0] = lastPlay;
+  else
+    lastSetts.push(lastPlay);
+
+  if (lastSetts.length > 20)
+    lastSetts.shift();
+  
+  setLastSetts(lastSetts);
+}
 
 function Choice(choice){
     setChoice(choice);
@@ -190,10 +204,12 @@ function Choice(choice){
   }
 
   function nextRound(){
-    setSettlements(GetSettlement(settlements[0], streak))
+    setSettlements(GetSettlement(settlements[0], streak, lastSettlements))
     setPause(false);
+    updateLastSettlements(settlements[0][0]);
     if (!correct)
       setStreak(0);
+    
   }
 
   function Sentence(orig, dest){
