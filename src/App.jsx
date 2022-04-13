@@ -199,29 +199,35 @@ function Choice(choice){
     let lat2 = dest.gps.split("(")[1].split(" ")[0];
     let horz = lat1-lat2;
 
-    let keyword = ""
-    if (vert > 0){
-      keyword = "צפונה";
-      if (Math.abs(vert) < Math.abs(horz) && horz > 0){
-        keyword="מזרחה";
-      }
-      else if (Math.abs(vert) < Math.abs(horz) && horz < 0)
-      {
-        keyword="מערבה";
-      }
+    let slope = vert/horz;
+    let keyword = "";
+    
+    if (longt2 > longt1){ 
+      if (slope > 0 && slope < 0.2)
+        keyword = "מערבה";
+      else if (slope > 0.2 && slope < 5)
+        keyword = "דרום מערבה";
+      else if (slope > 5 || slope < -5)
+        keyword = "דרומה";
+      else if (slope > -5 && slope < -0.2)
+        keyword = "דרום מזרחה";
+      else if (slope > -0.2 && slope < 0)
+        keyword = "מזרחה"
     }
     else{
-      keyword="דרומה";
-      if (Math.abs(vert) < Math.abs(horz) && horz > 0){
-        keyword="מזרחה";
-      }
-      else if (Math.abs(vert) < Math.abs(horz) && horz < 0)
-      {
-        keyword="מערבה";
-      }
+      if (slope > 0 && slope < 0.2)
+        keyword = "מזרחה";
+      else if (slope > 0.2 && slope < 5)
+        keyword = "צפון מזרחה";
+      else if (slope > 5 || slope < -5)
+        keyword = "צפונה";
+      else if (slope > -5 && slope < -0.2)
+        keyword = "צפון מערבה";
+      else if (slope > -0.2 && slope < 0)
+        keyword = "מערבה"
     }
 
-    return "נמצאת "+keyword+" בערך "+Math.round(calcCrow(lat1, longt1, lat2, longt2))+" ק\"מ מ"+dest.cityLabel;
+    return "נמצאת בערך "+Math.round(calcCrow(lat1, longt1, lat2, longt2))+" ק\"מ " +keyword+" מ"+dest.cityLabel;
   }
 
   if (pause){
