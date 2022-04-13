@@ -47,17 +47,20 @@ function toRad(Value)  {
       return Value * Math.PI / 180;
 }
 
-function getClosest(dest, list, minDist=0.04){
+function getClosest(dest, list, minDist=0.04, score=0){
   let closest, mostClosest, mostClosestLongt=minDist, mostClosestLat=minDist;
   let longt1, longt2, lat1, lat2;
   let i = 0;
   let distExt = 0;
 
+  if (score > 50)
+    score = 50;
+
   let run = true;
   do{
     closest = list[i];
 
-    if (closest.population > 10000){
+    if (closest.population > 50000 - score*1000){
       longt1 = dest.gps.split(" ")[1].replace(")", "");
       longt2 = closest.gps.split(" ")[1].replace(")", "");
 
@@ -92,15 +95,14 @@ function getCity(list){
   return list[RandInt(list.length)];
 }
 function GetSettlement(lastRound, score){
-  if (score > 50)
-    score = 50;
-
   const minDist = 0.04+score/1000;
   const maxDist = 0.06+score/1000;
-  console.log(minDist, maxDist);
   const list = SettlementsList;
 
   let setts=[], mostClosest, longt1, longt2, lat1, lat2;
+
+  if (score > 50)
+    score = 50;
 
   do{
     setts[0] = getCity(list);
@@ -124,7 +126,7 @@ function GetSettlement(lastRound, score){
     while (Math.abs(longt1-longt2) < maxDist || Math.abs(lat1-lat2) < maxDist)
   }
 
-  mostClosest = getClosest(setts[0], list, minDist);
+  mostClosest = getClosest(setts[0], list, minDist, score);
 
   let index;
   index = setts.indexOf(mostClosest);
@@ -235,7 +237,7 @@ function Choice(choice){
   }
 
   if (pause){
-    let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList)
+    let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, score=streak)
     let sentence1;
     if (closestLargeSettlement.cityLabel != settlements[0][settlements[1]].cityLabel)
       sentence1 = "ו"+ Sentence(settlements[0][0], closestLargeSettlement);
