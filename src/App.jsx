@@ -91,9 +91,13 @@ function getClosest(dest, list, minDist=0.04){
 function getCity(list){
   return list[RandInt(list.length)];
 }
-function GetSettlement(lastRound){
-  const minDist = 0.04;
-  const maxDist = 0.06;
+function GetSettlement(lastRound, score){
+  if (score > 50)
+    score = 50;
+
+  const minDist = 0.04+score/1000;
+  const maxDist = 0.06+score/1000;
+  console.log(minDist, maxDist);
   const list = SettlementsList;
 
   let setts=[], mostClosest, longt1, longt2, lat1, lat2;
@@ -101,14 +105,14 @@ function GetSettlement(lastRound){
   do{
     setts[0] = getCity(list);
   }
-  while(setts[0].population < 10000 || Unfresh(setts[0], lastRound))
+  while(setts[0].population < 50000 - score*1000 || Unfresh(setts[0], lastRound))
 
   for (let j = 1; j < 7; j++){
   do{
       do{
         setts[j] = getCity(list);
       }
-      while(setts[j].population < 10000 || Duplicates(setts, j) || Unfresh(setts[j], lastRound))
+      while(setts[j].population < 50000 - score*1000 || Duplicates(setts, j) || Unfresh(setts[j], lastRound))
 
       longt1 = setts[0].gps.split(" ")[1].replace(")", "");
       longt2 = setts[j].gps.split(" ")[1].replace(")", "");
@@ -134,10 +138,10 @@ function GetSettlement(lastRound){
 }
 
 function App() {
-  const [settlements, setSettlements] = useState(GetSettlement([null]));
+  const [streak, setStreak] = useState(0);
+  const [settlements, setSettlements] = useState(GetSettlement([null], streak));
   const [choice, setChoice] = useState(0);
   const [correct, setCorrect] = useState(false);
-  const [streak, setStreak] = useState(0);
   const [pause, setPause] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
@@ -184,7 +188,7 @@ function Choice(choice){
   }
 
   function nextRound(){
-    setSettlements(GetSettlement(settlements[0]))
+    setSettlements(GetSettlement(settlements[0], streak))
     setPause(false);
     if (!correct)
       setStreak(0);
