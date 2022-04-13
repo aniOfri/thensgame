@@ -237,7 +237,7 @@ function Choice(choice){
   }
 
   if (pause){
-    let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, score=streak)
+    let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, 0.04, streak)
     let sentence1;
     if (closestLargeSettlement.cityLabel != settlements[0][settlements[1]].cityLabel)
       sentence1 = "ו"+ Sentence(settlements[0][0], closestLargeSettlement);
