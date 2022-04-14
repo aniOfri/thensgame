@@ -139,8 +139,17 @@ function GetSettlement(lastRound, score, lastSetts){
   return [setts, index];
 }
 
+function createCookies(){
+  document.cookie = "Score=0";
+  document.cookie = "Highscore=0";
+}
+
 function App() {
-  const [streak, setStreak] = useState(0);
+  if (document.cookie=="")
+    createCookies();
+
+  let lastscore = parseInt(document.cookie.split("; ")[1].split("=")[1])
+  const [streak, setStreak] = useState(lastscore);
   const [lastSettlements, setLastSetts] = useState([null]);
   const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements));
   const [choice, setChoice] = useState(0);
@@ -200,6 +209,7 @@ function Choice(choice){
       setCorrect(false)
     }
 
+
     setPause(true);
   }
 
@@ -207,8 +217,10 @@ function Choice(choice){
     setSettlements(GetSettlement(settlements[0], streak, lastSettlements))
     setPause(false);
     updateLastSettlements(settlements[0][0]);
-    if (!correct)
+    if (!correct){
       setStreak(0);
+      document.cookie = "Score=0";
+    }
     
   }
 
@@ -252,6 +264,7 @@ function Choice(choice){
     return "נמצאת בערך "+Math.round(calcCrow(lat1, longt1, lat2, longt2))+" ק\"מ " +keyword+" מ"+dest.cityLabel;
   }
 
+  document.cookie = "Score="+streak;
   if (pause){
     let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, 0.04, streak)
     let sentence1;
@@ -268,6 +281,13 @@ function Choice(choice){
       answer = "נכונה! +נקודה!"
     }
 
+    let highscore = ""
+    if (indicator == "fail"){
+      if (streak > parseInt(document.cookie.split("; ")[0].split("=")[1])){
+        document.cookie = "Highscore="+streak;
+      }
+      highscore = "הניקוד הכי גבוה שלך הוא: "+document.cookie.split("; ")[0].split("=")[1];
+    }
     const isMobile = width <= 520;
 
     let information;
@@ -284,7 +304,7 @@ function Choice(choice){
         nextRound()}}>
       <header className="App-header">
         <p className="title">איזו עיר יותר קרובה?</p>
-        <p className="streak">ניקוד: {streak}</p>
+        <p className="streak">ניקוד: {streak} <br></br>{highscore}</p>
         <div className='wrapperPause center'>
           <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
           <h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
