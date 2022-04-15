@@ -177,10 +177,12 @@ function App() {
   const [streak, setStreak] = useState(lastscore);
   const [lastSettlements, setLastSetts] = useState([null]);
   const [timerEnabled, setTimerEnabled] = useState(timerCookies);
+  const [isActive, setIsActive] = useState(false);
+  const [time, setTime] = useState(0);
   const [minPop, setMinPop] = useState(0);
   const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, minPop));
   const [choice, setChoice] = useState(0);
-  const [correct, setCorrect] = useState(false);
+  const [correct, setCorrect] = useState(true);
   const [pause, setPause] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
@@ -199,6 +201,21 @@ useEffect(() => {
       window.removeEventListener('resize', handleWindowSizeChange);
   }
 }, []);
+
+useEffect(() => {
+  let interval = null;
+
+  if (isActive) {
+    interval = setInterval(() => {
+      setTime((time) => time + 10);
+    }, 10);
+  } else {
+    clearInterval(interval);
+  }
+  return () => {
+    clearInterval(interval);
+  };
+}, [isActive]);
 
 function updateLastSettlements(lastPlay){
   let lastSetts = lastSettlements;
@@ -236,7 +253,8 @@ function Choice(choice){
       setStreak(streak + 1);
     }
     else{
-      setCorrect(false)
+      setCorrect(false);
+      setIsActive(false);
     }
 
     setPause(true);
@@ -247,9 +265,10 @@ function Choice(choice){
     setPause(false);
     updateLastSettlements(settlements[0][0]);
     if (!correct){
+      setMenu(true);
       setStreak(0);
       document.cookie = "Score=0";
-      setMenu(true);
+      setCorrect(true);
     }
   }
 
@@ -260,6 +279,8 @@ function Choice(choice){
 
   function handleTimer(e){
     setTimerEnabled(e.target.checked);
+    setStreak(0);
+    document.cookie = "Score=0";
     document.cookie = "Timer="+timerEnabled;
   }
 
@@ -305,6 +326,10 @@ function Choice(choice){
 
   function startGame(){
     setMenu(false);
+    if (timerEnabled){
+      setTime(0);
+      setIsActive(true);
+    }
   }
 
   if (!timerEnabled)
@@ -312,7 +337,6 @@ function Choice(choice){
   document.cookie = "MinPop="+minPop;
   document.cookie = "Timer="+timerEnabled;
 
-  console.log(menu);
   if (settings){
     let popValue = parseInt(COOKIES["MinPop"]);
     var timerValue = COOKIES["Timer"];
@@ -334,7 +358,7 @@ function Choice(choice){
           <div className="text">
             טיימר
             <p className="smallText">שחק את המשחק על זמן ובדוק כמה אתה מהיר</p>
-            <p className="smallText">(בשימוש בטיימר הניקוד לא ישמר)</p>
+            <p className="smallText">(בשימוש בטיימר הניקוד לא ישמר וכל ניקוד שמור יתאפס)</p>
           </div>
           <div className="controller">
           <Switch checked={timerValue} onChange={handleTimer}/>
@@ -348,13 +372,16 @@ function Choice(choice){
     )
   }
   else if (menu){
+    let mode = "התחל משחק!";
+    if (streak > 0)
+      mode = "המשך משחק! (ניקוד: " +streak+")";
     return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
         <img src={settingsLogo} className="settingsImage" onClick={() => {setSettings(!settings)}}></img>
         <h1 className="menuTitle">איזו עיר יותר קרובה?</h1>
-        <Button className="startButton" variant="outlined" onClick={() => {startGame() }}> התחל משחק! </Button>
+        <Button className="startButton" variant="outlined" onClick={() => {startGame()}}> {mode}</Button>
       </header>
     </div>
     )
@@ -376,11 +403,32 @@ function Choice(choice){
     }
 
     let highscore = ""
+    let timeShow = ""
     if (indicator == "fail"){
       if (streak > parseInt(document.cookie.split("; ")[0].split("=")[1])){
         document.cookie = "Highscore="+streak;
       }
       highscore = "הניקוד הכי גבוה שלך הוא: "+document.cookie.split("; ")[0].split("=")[1];
+      if (timerEnabled)
+      {
+          timeShow = (
+            <div className="timer">
+              זמנים: 
+            <span className="digits">
+                {" "+("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
+            </span>
+            <span className="digits">
+              {("0" + Math.floor((time / 1000) % 60)).slice(-2)}.
+            </span>
+            <span className="digits mili-sec">
+              {("0" + ((time / 10) % 100)).slice(-2)}
+            </span>
+          </div>
+          )
+      }
+      else{
+        timeShow = (<div></div>);
+      }
     }
 
     const isMobile = width <= 520;
@@ -393,13 +441,14 @@ function Choice(choice){
     else{
       information = "infoHorz";
     }
-
+  
   return (
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
         <p className="title">איזו עיר יותר קרובה?</p>
-        <p className="streak">ניקוד: {streak} <br></br>{highscore}</p>
+        <p className="streak">ניקוד: {streak} <br></br>{highscore} <br></br>  {timeShow}</p>
+
         <div className='wrapperPause center'>
           <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
           <h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
@@ -429,11 +478,35 @@ else{
   if (mobileHeight){
     wrapper += " sizeDownText";
   }
+
+  let timeShow;
+  if (timerEnabled)
+  {
+      timeShow = (
+        <div className="timer">
+        <span className="digits">
+          {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
+        </span>
+        <span className="digits">
+          {("0" + Math.floor((time / 1000) % 60)).slice(-2)}.
+        </span>
+        <span className="digits mili-sec">
+          {("0" + ((time / 10) % 100)).slice(-2)}
+        </span>
+      </div>
+      )
+  }
+  else{
+    timeShow = (<div></div>);
+  }
+
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
+        
         <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
+        {timeShow}
         <h1 className="titleCity">איזה עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
         <div className={wrapper}>
           <div className={firstClass}>
