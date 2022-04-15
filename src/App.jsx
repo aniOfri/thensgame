@@ -447,7 +447,7 @@ function Choice(choice){
         nextRound()}}>
       <header className="App-header">
         <p className="title">איזו עיר יותר קרובה?</p>
-        <p className="streak">ניקוד: {streak} <br></br>{highscore} <br></br>  {timeShow}</p>
+        <p className="streak">{highscore} <br></br>  ניקוד:  {streak} <br></br>  {timeShow}</p>
 
         <div className='wrapperPause center'>
           <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
