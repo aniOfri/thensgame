@@ -109,17 +109,20 @@ function GetSettlement(lastRound, score, lastSetts, minPop){
   if (score > 50)
     score = 50;
 
+  let toSubstract = score*1000;
+  if (toSubstract < minPop) toSubstract = minPop;
+  
   do{
     setts[0] = getCity(list);
   }
-  while(setts[0].population < minPop - score*1000 || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
+  while(setts[0].population < 50000 - toSubstract || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
 
   for (let j = 1; j < 7; j++){
   do{
       do{
         setts[j] = getCity(list);
       }
-      while(setts[j].population < minPop - score*1000 || Duplicates(setts, j) || Unfresh(setts[j], lastRound))
+      while(setts[j].population < 50000 - toSubstract || Duplicates(setts, j) || Unfresh(setts[j], lastRound))
 
       longt1 = setts[0].gps.split(" ")[1].replace(")", "");
       longt2 = setts[j].gps.split(" ")[1].replace(")", "");
