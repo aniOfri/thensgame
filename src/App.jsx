@@ -106,13 +106,13 @@ function GetSettlement(lastRound, score, lastSetts, minPop){
 
   let setts=[], mostClosest, longt1, longt2, lat1, lat2;
 
-  if (score > minPop/1000)
-    score = minPop/1000;
+  if (score > 50)
+    score = 50;
 
   do{
     setts[0] = getCity(list);
   }
-  while(setts[0].population < 50000 - score*1000 || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
+  while(setts[0].population < minPop - score*1000 || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
 
   for (let j = 1; j < 7; j++){
   do{
