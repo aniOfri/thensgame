@@ -404,10 +404,10 @@ function Choice(choice){
     let highscore = ""
     let timeShow = ""
     if (indicator == "fail"){
-      if (streak > parseInt(document.cookie.split("; ")[0].split("=")[1])){
+      if (streak > parseInt(COOKIES["Highscore"])){
         document.cookie = "Highscore="+streak;
       }
-      highscore = "הניקוד הכי גבוה שלך הוא: "+document.cookie.split("; ")[0].split("=")[1];
+      highscore = "הניקוד הכי גבוה שלך הוא: "+COOKIES["Highscore"];
       if (timerEnabled)
       {
           timeShow = (
