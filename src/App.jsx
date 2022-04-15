@@ -182,7 +182,7 @@ function App() {
   const [timerEnabled, setTimerEnabled] = useState(COOKIES["Timer"]);
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState(0);
-  const [minPop, setMinPop] = useState(0);
+  const [minPop, setMinPop] = useState(parseInt(COOKIES["MinPop"]));
   const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, minPop));
   const [choice, setChoice] = useState(0);
   const [correct, setCorrect] = useState(true);
@@ -341,7 +341,6 @@ function Choice(choice){
   document.cookie = "Timer="+timerEnabled;
 
   if (settings){
-    let popValue = parseInt(COOKIES["MinPop"]);
     return (
       <div dir="rtl" className="App">
       <header className="App-header">
@@ -353,7 +352,7 @@ function Choice(choice){
             <p className="smallText">קביעת האוכלוסיה המינימלית של כל עיר במשחק</p>
           </div>
           <div className="controller">
-            <Slider value={popValue} min={0} max={50000} step={1000} valueLabelDisplay="auto" onChange={handleMinPop}/>
+            <Slider value={minPop} min={0} max={50000} step={1000} valueLabelDisplay="auto" onChange={handleMinPop}/>
           </div>
         </div>
         <div className="setting"><br></br>
