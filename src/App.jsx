@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
+import Slider from '@mui/material/Slider';
+import Switch from '@mui/material/Switch';
 import './App.css'
 import SettlementsList from './data/settlements.json';
 import LargeSettlementsList from './data/largesettlements.json';
+import settingsLogo from './settings.svg';
+import closeLogo from './x.svg';
 
 function RandInt(max) {
   return Math.floor(Math.random() * max);
@@ -94,15 +98,15 @@ function getClosest(dest, list, minDist=0.04, score=0){
 function getCity(list){
   return list[RandInt(list.length)];
 }
-function GetSettlement(lastRound, score, lastSetts){
+function GetSettlement(lastRound, score, lastSetts, minPop){
   const minDist = 0.04+score/1000;
   const maxDist = 0.06+score/1000;
   const list = SettlementsList;
 
   let setts=[], mostClosest, longt1, longt2, lat1, lat2;
 
-  if (score > 50)
-    score = 50;
+  if (score > minPop/1000)
+    score = minPop/1000;
 
   do{
     setts[0] = getCity(list);
@@ -139,24 +143,47 @@ function GetSettlement(lastRound, score, lastSetts){
   return [setts, index];
 }
 
+function checkCookies(){
+  const COOKIES = ["Score", "Highscore", "MinPop", "Timer"];
+
+  return COOKIES.some(v => !document.cookie.includes(v));
+}
+
 function createCookies(){
   document.cookie = "Score=0";
   document.cookie = "Highscore=0";
+  document.cookie = "Timer=false";
+  document.cookie = "MinPop=0";
 }
 
 function App() {
-  if (document.cookie=="")
-    createCookies();
+  const COOKIES = document.cookie
+                  .split(';')
+                  .reduce((res, c) => {
+                    const [key, val] = c.trim().split('=').map(decodeURIComponent)
+                    try {
+                      return Object.assign(res, { [key]: JSON.parse(val) })
+                    } catch (e) {
+                      return Object.assign(res, { [key]: val })
+                    }
+                  }, {})
 
-  let lastscore = parseInt(document.cookie.split("; ")[1].split("=")[1])
+  if (checkCookies())
+    createCookies();
+  
+  let lastscore = parseInt(COOKIES["Score"]);
+  let timerCookies = JSON.parse(COOKIES["Timer"]);
   const [streak, setStreak] = useState(lastscore);
   const [lastSettlements, setLastSetts] = useState([null]);
-  const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements));
+  const [timer, setTimer] = useState(timerCookies);
+  const [minPop, setMinPop] = useState(0);
+  const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, minPop));
   const [choice, setChoice] = useState(0);
   const [correct, setCorrect] = useState(false);
   const [pause, setPause] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
+  const [settings, setSettings] = useState(false);
 
 function handleWindowSizeChange() {
     setWidth(window.innerWidth);
@@ -214,14 +241,30 @@ function Choice(choice){
   }
 
   function nextRound(){
-    setSettlements(GetSettlement(settlements[0], streak, lastSettlements))
+    setSettlements(GetSettlement(settlements[0], streak, lastSettlements, minPop))
     setPause(false);
     updateLastSettlements(settlements[0][0]);
     if (!correct){
       setStreak(0);
       document.cookie = "Score=0";
     }
-    
+  }
+
+  function handleMinPop(e){
+    setMinPop(e.target.value);
+    document.cookie = "MinPop="+minPop;
+  }
+
+  function handleTimer(e){
+    setTimer(e.target.checked);
+    document.cookie = "Timer="+timer;
+  }
+
+  function toggleSettings(){
+    if (settings)
+      setSettings(false);
+    else
+      setSettings(true);
   }
 
   function Sentence(orig, dest){
@@ -264,8 +307,46 @@ function Choice(choice){
     return "נמצאת בערך "+Math.round(calcCrow(lat1, longt1, lat2, longt2))+" ק\"מ " +keyword+" מ"+dest.cityLabel;
   }
 
-  document.cookie = "Score="+streak;
-  if (pause){
+  if (!timer)
+    document.cookie = "Score="+streak;
+  document.cookie = "MinPop="+minPop;
+  document.cookie = "Timer="+timer;
+
+  if (settings){
+    let popValue = parseInt(COOKIES["MinPop"]);
+    var timerValue = COOKIES["Timer"];
+    return (
+      <div dir="rtl" className="App">
+      <header className="App-header">
+      <img src={closeLogo} className="closeImage" onClick={() => {toggleSettings()}}></img>
+        <h1>הגדרות</h1>
+        <div className="setting">
+          <div className="text">
+            אוכלוסיה מינימלית
+            <p className="smallText">קביעת האוכלוסיה המינימלית של כל עיר במשחק</p>
+          </div>
+          <div className="controller">
+            <Slider value={popValue} min={0} max={50000} step={1000} valueLabelDisplay="auto" onChange={handleMinPop}/>
+          </div>
+        </div>
+        <div className="setting"><br></br>
+          <div className="text">
+            טיימר
+            <p className="smallText">שחק את המשחק על זמן ובדוק כמה אתה מהיר</p>
+            <p className="smallText">(בשימוש בטיימר הניקוד לא ישמר)</p>
+          </div>
+          <div className="controller">
+          <Switch checked={timerValue} onChange={handleTimer}/>
+          </div>
+        </div>
+        <div className="footer">
+          <p dir="ltr" >© 2022 Ofri Gutman</p>
+      </div>
+      </header>
+    </div>
+    )
+  }
+  else if (pause){
     let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, 0.04, streak)
     let sentence1;
     if (closestLargeSettlement.cityLabel != settlements[0][settlements[1]].cityLabel)
@@ -288,6 +369,7 @@ function Choice(choice){
       }
       highscore = "הניקוד הכי גבוה שלך הוא: "+document.cookie.split("; ")[0].split("=")[1];
     }
+
     const isMobile = width <= 520;
 
     let information;
@@ -303,6 +385,7 @@ function Choice(choice){
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
+        <img src={settingsLogo} className="settingsImage" onClick={() => {toggleSettings()}}></img>
         <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak} <br></br>{highscore}</p>
         <div className='wrapperPause center'>
@@ -338,6 +421,7 @@ else{
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
+        <img src={settingsLogo} className="settingsImage" onClick={() => {toggleSettings()}}></img>
         <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <h1 className="titleCity">איזה עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>

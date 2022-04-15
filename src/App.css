@@ -160,3 +160,52 @@ h1{
   padding: 5px 5px 5px 5px;
 }
 
+
+.settingsImage{
+  position: absolute;
+  height: 25px;
+  right: 0;
+  padding: 17px  17px  17px  17px ;
+  transition: transform .5s;
+}
+
+.settingsImage:hover{
+  transform: rotate(360deg);
+}
+
+.closeImage{
+  position: absolute;
+  height: 25px;
+  right: 0;
+  padding: 17px  17px  17px  17px ;
+  transition: transform .2s;
+}
+
+.closeImage:hover{
+  transform: scale(1.2);
+}
+
+
+.footer{
+  width: 33%;
+  position:absolute;
+  bottom: 0;
+  padding: 2px 15px;
+  font-size: 10px;
+}
+
+.footer p{
+  text-align: left;
+}
+
+.settingsDiv{
+  padding: 5px 25px 25px 25px;
+  background-color: #3D434F;
+  height: 100%;
+}
+
+.smallText{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 10px;
+}
