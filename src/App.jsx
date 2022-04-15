@@ -5,8 +5,8 @@ import Switch from '@mui/material/Switch';
 import './App.css'
 import SettlementsList from './data/settlements.json';
 import LargeSettlementsList from './data/largesettlements.json';
-import settingsLogo from './settings.svg';
-import closeLogo from './x.svg';
+import settingsLogo from './settings.png';
+import closeLogo from './x.png';
 
 function RandInt(max) {
   return Math.floor(Math.random() * max);
@@ -173,10 +173,9 @@ function App() {
     createCookies();
   
   let lastscore = parseInt(COOKIES["Score"]);
-  let timerCookies = JSON.parse(COOKIES["Timer"]);
   const [streak, setStreak] = useState(lastscore);
   const [lastSettlements, setLastSetts] = useState([null]);
-  const [timerEnabled, setTimerEnabled] = useState(timerCookies);
+  const [timerEnabled, setTimerEnabled] = useState(COOKIES["Timer"]);
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState(0);
   const [minPop, setMinPop] = useState(0);
@@ -339,7 +338,6 @@ function Choice(choice){
 
   if (settings){
     let popValue = parseInt(COOKIES["MinPop"]);
-    var timerValue = COOKIES["Timer"];
     return (
       <div dir="rtl" className="App">
       <header className="App-header">
@@ -361,7 +359,7 @@ function Choice(choice){
             <p className="smallText">(בשימוש בטיימר הניקוד לא ישמר וכל ניקוד שמור יתאפס)</p>
           </div>
           <div className="controller">
-          <Switch checked={timerValue} onChange={handleTimer}/>
+          <Switch checked={COOKIES["Timer"]} onChange={handleTimer}/>
           </div>
         </div>
         <div className="footer">

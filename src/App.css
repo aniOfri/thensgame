@@ -166,23 +166,13 @@ h1{
   height: 25px;
   right: 0;
   padding: 17px  17px  17px  17px ;
-  transition: transform .5s;
-}
-
-.settingsImage:hover{
-  transform: rotate(360deg);
 }
 
 .closeImage{
   position: absolute;
   height: 25px;
-  right: 0;
+  left: 0;
   padding: 17px  17px  17px  17px ;
-  transition: transform .2s;
-}
-
-.closeImage:hover{
-  transform: scale(1.2);
 }
 
 
