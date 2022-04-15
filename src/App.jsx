@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Slider from '@mui/material/Slider';
+import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import './App.css'
 import SettlementsList from './data/settlements.json';
@@ -175,7 +176,7 @@ function App() {
   let timerCookies = JSON.parse(COOKIES["Timer"]);
   const [streak, setStreak] = useState(lastscore);
   const [lastSettlements, setLastSetts] = useState([null]);
-  const [timer, setTimer] = useState(timerCookies);
+  const [timerEnabled, setTimerEnabled] = useState(timerCookies);
   const [minPop, setMinPop] = useState(0);
   const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, minPop));
   const [choice, setChoice] = useState(0);
@@ -184,6 +185,8 @@ function App() {
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
   const [settings, setSettings] = useState(false);
+  const [menu, setMenu] = useState(true);
+
 
 function handleWindowSizeChange() {
     setWidth(window.innerWidth);
@@ -236,7 +239,6 @@ function Choice(choice){
       setCorrect(false)
     }
 
-
     setPause(true);
   }
 
@@ -247,6 +249,7 @@ function Choice(choice){
     if (!correct){
       setStreak(0);
       document.cookie = "Score=0";
+      setMenu(true);
     }
   }
 
@@ -256,15 +259,8 @@ function Choice(choice){
   }
 
   function handleTimer(e){
-    setTimer(e.target.checked);
-    document.cookie = "Timer="+timer;
-  }
-
-  function toggleSettings(){
-    if (settings)
-      setSettings(false);
-    else
-      setSettings(true);
+    setTimerEnabled(e.target.checked);
+    document.cookie = "Timer="+timerEnabled;
   }
 
   function Sentence(orig, dest){
@@ -307,18 +303,23 @@ function Choice(choice){
     return "נמצאת בערך "+Math.round(calcCrow(lat1, longt1, lat2, longt2))+" ק\"מ " +keyword+" מ"+dest.cityLabel;
   }
 
-  if (!timer)
+  function startGame(){
+    setMenu(false);
+  }
+
+  if (!timerEnabled)
     document.cookie = "Score="+streak;
   document.cookie = "MinPop="+minPop;
-  document.cookie = "Timer="+timer;
+  document.cookie = "Timer="+timerEnabled;
 
+  console.log(menu);
   if (settings){
     let popValue = parseInt(COOKIES["MinPop"]);
     var timerValue = COOKIES["Timer"];
     return (
       <div dir="rtl" className="App">
       <header className="App-header">
-      <img src={closeLogo} className="closeImage" onClick={() => {toggleSettings()}}></img>
+      <img src={closeLogo} className="closeImage" onClick={() => {setSettings(!settings)}}></img>
         <h1>הגדרות</h1>
         <div className="setting">
           <div className="text">
@@ -342,6 +343,18 @@ function Choice(choice){
         <div className="footer">
           <p dir="ltr" >© 2022 Ofri Gutman</p>
       </div>
+      </header>
+    </div>
+    )
+  }
+  else if (menu){
+    return (
+      <div dir="rtl" className="App" onClick={()=>{
+        nextRound()}}>
+      <header className="App-header">
+        <img src={settingsLogo} className="settingsImage" onClick={() => {setSettings(!settings)}}></img>
+        <h1 className="menuTitle">איזו עיר יותר קרובה?</h1>
+        <Button className="startButton" variant="outlined" onClick={() => {startGame() }}> התחל משחק! </Button>
       </header>
     </div>
     )
@@ -385,13 +398,11 @@ function Choice(choice){
       <div dir="rtl" className="App" onClick={()=>{
         nextRound()}}>
       <header className="App-header">
-        <img src={settingsLogo} className="settingsImage" onClick={() => {toggleSettings()}}></img>
         <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak} <br></br>{highscore}</p>
         <div className='wrapperPause center'>
           <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
           <h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
-          <p>{}</p>
         </div>
       </header>
     </div>
@@ -421,7 +432,6 @@ else{
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
-        <img src={settingsLogo} className="settingsImage" onClick={() => {toggleSettings()}}></img>
         <p className="title">איזו עיר יותר קרובה?</p>
         <p className="streak">ניקוד: {streak}</p>
         <h1 className="titleCity">איזה עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>

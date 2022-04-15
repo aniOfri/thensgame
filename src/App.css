@@ -187,11 +187,11 @@ h1{
 
 
 .footer{
-  width: 33%;
   position:absolute;
   bottom: 0;
   padding: 2px 15px;
   font-size: 10px;
+  left: 0;
 }
 
 .footer p{
@@ -208,4 +208,23 @@ h1{
   margin-top: 0px;
   margin-bottom: 0px;
   font-size: 10px;
+}
+
+.menuTitle{
+  margin-top: 15vmax;
+}
+
+.MuiButton-root.startButton{
+  padding: 10px 10px 10px 10px;
+  color: white;
+  border: 1px #3D434F solid;
+  background-color: #3D434F;
+  transition: transform .2s;
+}
+
+.MuiButton-root.startButton:hover{
+  transform: scale(1.1);
+  color: white;
+  border: 1px #3D434F solid;
+  background-color: #3D434F
 }
