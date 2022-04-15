@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
-import Switch from "react-switch";
+import Switch from 'react-switch/dist/react-switch.dev.js'
 import './App.css'
 import SettlementsList from './data/settlements.json';
 import LargeSettlementsList from './data/largesettlements.json';
@@ -158,6 +158,9 @@ function createCookies(){
 }
 
 function App() {
+  if (checkCookies())
+  createCookies();
+
   const COOKIES = document.cookie
                   .split(';')
                   .reduce((res, c) => {
@@ -169,8 +172,6 @@ function App() {
                     }
                   }, {})
 
-  if (checkCookies())
-    createCookies();
   
   let lastscore = parseInt(COOKIES["Score"]);
   const [streak, setStreak] = useState(lastscore);
@@ -425,7 +426,7 @@ function Choice(choice){
           )
       }
       else{
-        timeShow = (<div></div>);
+        timeShow = "";
       }
     }
 
@@ -495,7 +496,7 @@ else{
       )
   }
   else{
-    timeShow = (<div></div>);
+    timeShow = ("");
   }
 
   return (
