@@ -360,7 +360,7 @@ function Choice(choice){
             <p className="smallText">(בשימוש בטיימר הניקוד לא ישמר וכל ניקוד שמור יתאפס)</p>
           </div>
           <div className="controller">
-          <Switch onColor="#86d3ff" onHandleColor="#2693e6" uncheckedIcon={false} checkedIcon={false}  checked={COOKIES["Timer"]} onChange={handleTimer}/>
+          <Switch onColor="#86d3ff" onHandleColor="#2693e6" uncheckedIcon={false} checkedIcon={false} checked={timerEnabled} onChange={handleTimer}/>
           </div>
         </div>
         <div className="footer">
