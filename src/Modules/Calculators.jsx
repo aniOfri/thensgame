@@ -20,7 +20,7 @@ function toRad(Value) {
     return Value * Math.PI / 180;
 }
 
-function timerHTML(timerEnabled) {
+function timerHTML(timerEnabled, time) {
     let timeShow;
     if (timerEnabled) {
         timeShow = (
@@ -43,4 +43,4 @@ function timerHTML(timerEnabled) {
     return timeShow;
 }
 
-export default { RandInt, calcCrow, timerHTML };
+export { RandInt, calcCrow, timerHTML };

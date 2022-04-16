@@ -1,5 +1,5 @@
 import { RandInt } from './Calculators';
-import SettlementsList from './data/settlements.json';
+import SettlementsList from '../data/settlements.json';
 
 // CHECK THAT THERE IS NO DUPLICATES IN THE SET
 function Duplicates(setts, j) {
@@ -136,4 +136,4 @@ function getClosest(dest, list, minDist = 0.04, score = 0, pairsList = []) {
 
 
 
-export default { GetSettlement };
+export { GetSettlement, getClosest };

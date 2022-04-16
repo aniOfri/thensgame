@@ -11,4 +11,4 @@ function createCookies() {
     document.cookie = "MinPop=0";
 }
 
-export default { checkCookies, createCookies };
+export { checkCookies, createCookies };
