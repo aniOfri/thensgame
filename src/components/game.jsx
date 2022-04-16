@@ -9,7 +9,6 @@ import { GetSettlement, getClosest } from '../modules/Settlements'
 
 
 function Game(props) {
-    console.log(1);
     // Game related states
     const [time, setTime] = useState(0);
     const [streak, setStreak] = useState(parseInt(props.cookies["Score"]));
@@ -154,6 +153,8 @@ function Game(props) {
             setCorrect(true);
         }
     }
+
+    
     let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {
@@ -190,13 +191,14 @@ function Game(props) {
         else {
             information = "infoHorz";
         }
-
+        
+        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br></div>) : (<div><h1>המשך</h1></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
                 <p className="streak">{highscore} <br></br>  ניקוד:  {streak} <br></br>  {timerHTML(props.timerEnabled, time)}</p>
                 <div className='wrapperPause center'>
                     <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
-                    <h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br>
+                    {moreInfo}
                 </div>
             </div>
         )

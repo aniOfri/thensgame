@@ -22,10 +22,10 @@ function App() {
       } catch (e) {
         return Object.assign(res, { [key]: val })
       }
-  }, {})
-
+    }, {})
 
   const [timerEnabled, setTimerEnabled] = useState(COOKIES["Timer"]);
+  const [showInfo, setShowInfo] = useState(COOKIES["ShowInfo"]);
   const [minPop, setMinPop] = useState(parseInt(COOKIES["MinPop"]));
   const [isActive, setIsActive] = useState(false);
   const [menu, setMenu] = useState(true);
@@ -38,9 +38,9 @@ function App() {
   }
 
   let jsx;
-  if (menu) jsx = (<Menu cookies={COOKIES} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
+  if (menu) jsx = (<Menu cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
-    jsx = (<Game cookies={COOKIES} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
+    jsx = (<Game cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
     <div dir="rtl" className="App">

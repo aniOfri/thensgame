@@ -22,6 +22,11 @@ function Settings(props) {
         document.cookie = "Timer=" + props.timerEnabled;
     }
 
+    function handleInfo(e) {
+        props.setShowInfo(e);
+        document.cookie = "ShowInfo=" + props.showInfo;
+    }
+
     return (
         <div>
             <img src={closeLogo} className="closeImage" onClick={() => { props.setSettings(!props.settings) }}></img>
@@ -41,6 +46,13 @@ function Settings(props) {
                 </div>
                 <Switch className="controller" onColor="#86d3ff" onHandleColor="#2693e6" uncheckedIcon={false} checkedIcon={false} checked={props.timerEnabled} onChange={handleTimer} />
             </div>
+            <div className="setting">
+                <div>
+                    <p className="settingTitle">מידע בדף ביניים</p>
+                    <p className="smallText">הצג מידע נוסף על העיר בדף הביניים</p>
+                </div>
+                <Switch className="controller" onColor="#86d3ff" onHandleColor="#2693e6" uncheckedIcon={false} checkedIcon={false} checked={props.showInfo} onChange={handleInfo} />
+            </div>
             <div className="footer">
                 <p dir="ltr" >© 2022 Ofri Gutman</p>
             </div>
@@ -51,12 +63,12 @@ function Settings(props) {
 function Menu(props) {
     const [settings, setSettings] = useState(false);
 
-    console.log(props);
     if (settings) {
         document.cookie = "MinPop=" + props.minPop;
         document.cookie = "Timer=" + props.timerEnabled;
+        document.cookie = "ShowInfo=" + props.showInfo;
 
-        return <Settings setMinPop={props.setMinPop} minPop={props.minPop} setTimerEnabled={props.setTimerEnabled} timerEnabled={props.timerEnabled} setSettings={setSettings} settings={settings} />
+        return <Settings setShowInfo={props.setShowInfo} showInfo={props.showInfo} setMinPop={props.setMinPop} minPop={props.minPop} setTimerEnabled={props.setTimerEnabled} timerEnabled={props.timerEnabled} setSettings={setSettings} settings={settings} />
     }
     else {
         let mode = "התחל משחק!";
