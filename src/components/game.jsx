@@ -4,8 +4,8 @@ import LargeSettlementsList from '../data/largesettlements.json';
 
 // Modules
 import { useState, useEffect } from 'react'
-import { calcCrow, timerHTML } from '../Modules/Calculators';
-import { GetSettlement, getClosest } from '../Modules/Settlements'
+import { calcCrow, timerHTML } from '../modules/Calculators';
+import { GetSettlement, getClosest } from '../modules/Settlements'
 
 
 function Game(props) {
@@ -154,7 +154,7 @@ function Game(props) {
             setCorrect(true);
         }
     }
-
+    let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {
         let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, 0.04, streak)
@@ -191,7 +191,7 @@ function Game(props) {
             information = "infoHorz";
         }
 
-        return (
+        jsx = (
             <div onClick={() => { nextRound() }}>
                 <p className="streak">{highscore} <br></br>  ניקוד:  {streak} <br></br>  {timerHTML(props.timerEnabled, time)}</p>
                 <div className='wrapperPause center'>
@@ -211,7 +211,8 @@ function Game(props) {
         let wrapper = isMobile ? "wrapper mobile" : "wrapper horz";
         wrapper += mobileHeight ? " sizeDownText" : "";
 
-        return (<div>
+
+        jsx = (<div>
             <p className="streak">ניקוד: {streak}</p>
             {timerHTML(props.timerEnabled, time)}
             <h1 className="titleCity">איזו עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
@@ -231,6 +232,13 @@ function Game(props) {
             </div>
         </div>);
     }
+
+    return (
+        <div>
+            <p className="title">איזו עיר יותר קרובה?</p>
+            {jsx}
+        </div>
+    )
 }
 
 export default Game;
