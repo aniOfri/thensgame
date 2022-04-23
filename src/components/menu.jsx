@@ -71,17 +71,39 @@ function Menu(props) {
         return <Settings setShowInfo={props.setShowInfo} showInfo={props.showInfo} setMinPop={props.setMinPop} minPop={props.minPop} setTimerEnabled={props.setTimerEnabled} timerEnabled={props.timerEnabled} setSettings={setSettings} settings={settings} />
     }
     else {
-        let mode = "התחל משחק!";
+        let mode = "משחק לבד";
         if (props.cookies["streak"] > 0)
-            mode = "המשך משחק! (ניקוד: " + props.cookies["streak"] + ")";
+            mode = "המשך משחק לבד (ניקוד: " + props.cookies["streak"] + ")";
 
-        return (
-            <div>
-                <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
-                <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
-                <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> {mode}</Button>
-            </div>
-        );
+        if (!props.isMultiplayer){
+            return (
+                <div>
+                    <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
+                    <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
+                    <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> {mode}</Button><br></br>
+                    <Button className="startButton" variant="outlined" onClick={() => { props.startMultiplayer() }}> משחק רב משתתפים</Button>
+                </div>
+            );
+        }
+        else{
+            return (
+                <div>
+                    <img src={closeLogo} className="closeImage" onClick={() => { props.setIsMultiplayer(false) }}></img>
+                    <h1 className="menuTitle ">משחק רב משתתפים</h1>
+                    <h5 className="menuSubTitle">הכנס שם ומספר חדר</h5>
+                    שם:
+                    <input type="text" onChange={(event) => {
+                    setUsername(event.target.value)
+                    }}></input><br></br>
+                    חדר:
+                    <input type="text" onChange={(event) => {
+                    setRoom(event.target.value)
+                    }}></input><br></br>
+                    <button onClick={props.joinRoom()}>JOIN ROOM</button>
+                </div>
+            );
+        }
+
     }
 }
 

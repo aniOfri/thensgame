@@ -8,6 +8,9 @@ import Game from './components/game';
 // Modules
 import { useState } from 'react'
 import { checkCookies, createCookies } from './modules/Cookies';
+import io from 'socket.io-client';
+
+const socket = io.connect("http://localhost:3000");
 
 function App() {
   if (checkCookies())
@@ -29,6 +32,21 @@ function App() {
   const [minPop, setMinPop] = useState(parseInt(COOKIES["MinPop"]));
   const [isActive, setIsActive] = useState(false);
   const [menu, setMenu] = useState(true);
+  const [isMultiplayer, setIsMultiplayer] = useState(false);
+
+  // TEMPORARY
+  const [username, setUsername] = useState("");
+  const [room, setRoom] = useState("");
+
+  function joinRoom(){
+    if (username !== "" && room !== ""){
+      socket.emit("join_room", room);
+    }
+  }
+
+  function startMultiplayer(){
+    setIsMultiplayer(true);
+  }
 
   function startGame() {
     setMenu(false);
@@ -38,7 +56,7 @@ function App() {
   }
 
   let jsx;
-  if (menu) jsx = (<Menu cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
+  if (menu) jsx = (<Menu cookies={COOKIES} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
     jsx = (<Game cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
