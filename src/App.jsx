@@ -35,7 +35,8 @@ function App() {
   const [isMultiplayer, setIsMultiplayer] = useState(false);
   const [waitingRoom, setWaitingRoom] = useState(false);
   const [currentAnswers, setCurrentAnswers] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(0);
+  const [host, setHost] = useState(false);
 
   // TEMPORARY
   const [username, setUsername] = useState("");
@@ -53,13 +54,18 @@ function App() {
   }
   
   useEffect(async ()=>{
-    await socket.emit("request_users", room);
-    socket.on("current_users", (data) =>{
-        setUsers(data);
-      })
-    return async () => {
       await socket.emit("request_users", room);
-    };
+      socket.on("current_users", (data) =>{
+          setUsers(data);
+      })
+
+      if (users == 1)
+        setHost(true);
+      else if(users == 2)
+        startGame();
+      return async () => {
+        await socket.emit("request_users", room);
+      };
   }, [socket, users]);
 
   function startMultiplayer(){
@@ -73,11 +79,10 @@ function App() {
     }
   }
 
-  console.log("Update");
   let jsx;
   if (menu) jsx = (<Menu users={users} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
-    jsx = (<Game cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
+    jsx = (<Game cookies={COOKIES} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
     <div dir="rtl" className="App">

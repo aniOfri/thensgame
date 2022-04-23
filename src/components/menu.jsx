@@ -102,15 +102,8 @@ function Menu(props) {
             else{
             console.log(props.users)
             let list;
-            if (props.users.length == 0){
+            if (props.users.length == 0)
                 list = "מחכים לשחקן נוסף.."
-            } else {
-                list = (<ol>
-                    {props.users.map((user) => (
-                        <li>{user.value}</li>
-                    ))}
-                    </ol>)
-            }
             
             return (
                 <div>

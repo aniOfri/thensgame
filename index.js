@@ -6,10 +6,11 @@ const path = require("path");
 const {Server} = require("socket.io");
 const forceSsl = require('force-ssl-heroku');
 
-var sockets = [];
 
 const createServer = async () =>
 {
+	var sockets = 0;
+
 	const app = express();
 
 	app.use(cors());
@@ -36,37 +37,30 @@ const createServer = async () =>
 			socket.to(data.room).emit("recieve_answer", data);
 		})
 
+		socket.on("send_question", (data) =>{
+			socket.broadcast.to(data.room).emit("receive_question", data.settlements);
+		});
+
 		socket.on("join_room", (data) =>{
 			socket.join(data.room);
-			sockets.push({
-				key: socket.id,
-				value: data.name
-			});
+			sockets += 1;
+			console.log(sockets);
 			socket.broadcast.to(data.room).emit("current_users", sockets);
 		});
 
 		socket.on("request_users", (room) =>{
+			console.log(sockets);
 			socket.broadcast.to(room).emit("current_users", sockets);
 		});
 
-		socket.on("disconnecting", ()=>{
-			var rooms = Object.keys(socket.rooms);
-			
-			let i = 0;
-			while (i < sockets.length){
-				if (sockets[i].key == socket.id){
-					sockets.splice(i, 1);
-					i = sockets.length;
-				} 
-				i++;
-			}
 
-			rooms.forEach(function(room){
-				socket.to(room).emit("current_users", sockets);
-			});
+
+		socket.on("disconnecting", ()=>{
+			sockets -= 1;
+			if (sockets < 0)
+				sockets = 0;
 
 			console.log(socket.id +" disconnected.");
-			console.log(sockets);
 		});
 	})
 

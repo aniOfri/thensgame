@@ -19,6 +19,7 @@ function Game(props) {
     const [choice, setChoice] = useState(0);
     const [correct, setCorrect] = useState(true);
 
+
     // Mobile related States
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
@@ -27,6 +28,22 @@ function Game(props) {
         setWidth(window.innerWidth);
         setHeight(window.innerHeight);
     }
+
+    useEffect(async () => {
+        if (props.host){
+            var data = {
+                room: props.room,
+                settlements: settlements
+            }
+            await props.socket.emit("send_question", data);
+        }
+        else{
+            console.log("NOT HOST")
+            props.socket.on("recieve_question", (data) =>{
+                setSettlement(data);
+            })
+        }
+    }, [props.socket, settlements]);
 
     useEffect(() => {
         window.addEventListener('resize', handleWindowSizeChange);
@@ -154,7 +171,7 @@ function Game(props) {
         }
     }
 
-    
+    console.log(props.host);
     let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {
