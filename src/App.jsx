@@ -6,7 +6,7 @@ import Menu from './components/menu'
 import Game from './components/game';
 
 // Modules
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { checkCookies, createCookies } from './modules/Cookies';
 import io from 'socket.io-client';
 
@@ -33,16 +33,34 @@ function App() {
   const [isActive, setIsActive] = useState(false);
   const [menu, setMenu] = useState(true);
   const [isMultiplayer, setIsMultiplayer] = useState(false);
+  const [waitingRoom, setWaitingRoom] = useState(false);
+  const [currentAnswers, setCurrentAnswers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   // TEMPORARY
   const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
 
-  function joinRoom(){
+  async function joinRoom(){
     if (username !== "" && room !== ""){
-      socket.emit("join_room", room);
+      const data = {
+        name: username,
+        room: room
+      }
+      await socket.emit("join_room", data);
+      setWaitingRoom(true);
     }
   }
+  
+  useEffect(async ()=>{
+    await socket.emit("request_users", room);
+    socket.on("current_users", (data) =>{
+        setUsers(data);
+      })
+    return async () => {
+      await socket.emit("request_users", room);
+    };
+  }, [socket, users]);
 
   function startMultiplayer(){
     setIsMultiplayer(true);
@@ -55,8 +73,9 @@ function App() {
     }
   }
 
+  console.log("Update");
   let jsx;
-  if (menu) jsx = (<Menu cookies={COOKIES} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
+  if (menu) jsx = (<Menu users={users} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
     jsx = (<Game cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 

@@ -81,27 +81,45 @@ function Menu(props) {
                     <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
                     <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
                     <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> {mode}</Button><br></br>
-                    <Button className="startButton" variant="outlined" onClick={() => { props.startMultiplayer() }}> משחק רב משתתפים</Button>
+                    <Button className="startButton" variant="outlined" onClick={() => { props.setIsMultiplayer(true) }}> משחק רב משתתפים</Button>
                 </div>
             );
         }
         else{
+            if (!props.waitingRoom){
             return (
                 <div>
                     <img src={closeLogo} className="closeImage" onClick={() => { props.setIsMultiplayer(false) }}></img>
-                    <h1 className="menuTitle ">משחק רב משתתפים</h1>
-                    <h5 className="menuSubTitle">הכנס שם ומספר חדר</h5>
-                    שם:
-                    <input type="text" onChange={(event) => {
-                    setUsername(event.target.value)
-                    }}></input><br></br>
-                    חדר:
-                    <input type="text" onChange={(event) => {
-                    setRoom(event.target.value)
-                    }}></input><br></br>
-                    <button onClick={props.joinRoom()}>JOIN ROOM</button>
+                    <h1 className="menuTitle ">משחק רב משתתפים</h1><br></br>
+                    שם:<br></br>
+                    <input type="text" onChange={(event) => { props.setUsername(event.target.value) }}></input><br></br>
+                    חדר:<br></br>
+                    <input type="text" onChange={(event) => { props.setRoom(event.target.value) }}></input><br></br>
+                    <Button className="startButton" variant="outlined" onClick={() => { props.joinRoom() }}> התחבר </Button>
                 </div>
-            );
+                );
+            }
+            else{
+            console.log(props.users)
+            let list;
+            if (props.users.length == 0){
+                list = "מחכים לשחקן נוסף.."
+            } else {
+                list = (<ol>
+                    {props.users.map((user) => (
+                        <li>{user.value}</li>
+                    ))}
+                    </ol>)
+            }
+            
+            return (
+                <div>
+                    <h1 className="menuTitle ">חדר המתנה</h1><br></br>
+                    {list}<br></br>
+                    <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> התחל משחק</Button>
+                </div>
+            )
+            }
         }
 
     }
