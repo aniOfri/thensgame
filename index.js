@@ -30,14 +30,13 @@ const createServer = async () =>
 	const io = new Server(server);
 
 	io.on("connection", (socket) =>{
-		console.log(socket.id+" connected.");
-		
 		socket.on("send_answer", (data) =>{
 			console.log(socket.id +" answered "+data);
 			socket.to(data.room).emit("recieve_answer", data);
 		})
 
 		socket.on("send_question", (data) =>{
+			console.log("Emitting \""+data.settlements+"\" to room "+data.room);
 			socket.broadcast.to(data.room).emit("receive_question", data.settlements);
 		});
 

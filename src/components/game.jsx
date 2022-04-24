@@ -5,8 +5,8 @@ import LargeSettlementsList from '../data/largesettlements.json';
 // Modules
 import { useState, useEffect } from 'react'
 import { calcCrow, timerHTML } from '../modules/Calculators';
-import { GetSettlement, getClosest } from '../modules/Settlements'
-
+import { GetSettlement, getClosest, createEmpty } from '../modules/Settlements'
+import io from 'socket.io-client';
 
 function Game(props) {
     // Game related states
@@ -15,10 +15,13 @@ function Game(props) {
     const [pause, setPause] = useState(false);
     const [pairs, setPairs] = useState([]);
     const [lastSettlements, setLastSetts] = useState([null]);
-    const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, props.minPop, pairs));
+    const [settlements, setSettlements] = useState(props.isMultiplayer && !props.host ? createEmpty() : GetSettlement([null], streak, lastSettlements, props.minPop, pairs));
     const [choice, setChoice] = useState(0);
     const [correct, setCorrect] = useState(true);
 
+    let socket = null;
+    if (props.isMultiplayer)
+        socket = io.connect("http://localhost:3000"); 
 
     // Mobile related States
     const [width, setWidth] = useState(window.innerWidth);
@@ -30,10 +33,12 @@ function Game(props) {
     }
 
     useEffect(()=>{
-        props.socket.on("recieve_question", (data) =>{
-            setSettlement(data);
-        })
-    }, [props.socket]);
+        if (props.isMultiplayer){
+            socket.on("receive_question", (data) =>{
+                setSettlement(data);
+            })
+        }
+    }, [socket, settlements]);
 
     useEffect(() => {
         window.addEventListener('resize', handleWindowSizeChange);
@@ -48,17 +53,23 @@ function Game(props) {
         if (props.isActive) {
             interval = setInterval(() => {
                 setTime((time) => time + 10);
+                if (time >= 9990){
+                    props.setIsActive(false);
+                    Choice(7);
+                }
+                    
             }, 10);
         } else {
+            console.log(time);
             clearInterval(interval);
         }
         return () => {
             clearInterval(interval);
         };
-    }, [props.isActive]);
-
+    }, [props.isActive, time]);
 
     function Choice(choice) {
+        props.setIsActive(false);
         setChoice(choice);
 
         setCorrect(true)
@@ -82,7 +93,6 @@ function Game(props) {
         }
         else {
             setCorrect(false);
-            props.setIsActive(false);
         }
 
         setPause(true);
@@ -147,16 +157,11 @@ function Game(props) {
         setPairs(allpairs);
     }
 
-    async function nextRound() {
+    function nextRound() {
+        setTime(0);
+        props.setIsActive(true);
         addToPairs();
         setSettlements(GetSettlement(settlements[0], streak, lastSettlements, props.minPop, pairs))
-        if (props.multiplayer && props.host){
-            var data = {
-                room: props.room,
-                settlements: settlements
-            }
-            await props.socket.emit("send_question", data);
-        }
         setPause(false);
         updateLastSettlements(settlements[0][0]);
         if (!correct) {
@@ -168,7 +173,14 @@ function Game(props) {
         }
     }
 
-    console.log(props.host);
+    if (props.isMultiplayer && props.host){
+        var data = {
+            room: props.room,
+            settlements: settlements
+        }
+        socket.emit("send_question", data);
+    }
+
     let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {
@@ -206,12 +218,17 @@ function Game(props) {
             information = "infoHorz";
         }
         
+        let indicatorSentence;
+        if (choice != 7)
+            indicatorSentence = settlements[0][choice].cityLabel+" היא תשובה "+ answer;
+        else
+            indicatorSentence = "נגמר הזמן.";
         let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br></div>) : (<div><h1>המשך</h1></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
                 <p className="streak">{highscore} <br></br>  ניקוד:  {streak} <br></br>  {timerHTML(props.timerEnabled, time)}</p>
                 <div className='wrapperPause center'>
-                    <p className={indicator}>{settlements[0][choice].cityLabel} היא תשובה {answer}</p>
+                    <p className={indicator}>{indicatorSentence}</p>
                     {moreInfo}
                 </div>
             </div>
@@ -230,7 +247,7 @@ function Game(props) {
 
         jsx = (<div>
             <p className="streak">ניקוד: {streak}</p>
-            {timerHTML(props.timerEnabled, time)}
+            {timerHTML(props.timerEnabled || props.isMultiplayer, time)}
             <h1 className="titleCity">איזו עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
             <div className={wrapper}>
                 <div className={firstClass}>

@@ -42,12 +42,13 @@ function GetSettlement(lastRound, score, lastSetts, minPop, pairsList) {
     score = 50;
 
   let toSubstract = score * 1000;
-  if (toSubstract < minPop) toSubstract = minPop;
+  let pop = 50000 - toSubstract;
+  if (pop < minPop) pop = minPop;
 
   do {
     setts[0] = getCity(list);
   }
-  while (setts[0].population < 50000 - toSubstract || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
+  while (setts[0].population < pop || Unfresh(setts[0], lastRound) || Unfresh(setts[0], lastSetts))
 
   for (let j = 1; j < 7; j++) {
     do {
@@ -87,6 +88,18 @@ function pairsCheck(list, pair) {
       valid = false;
   }
   return valid;
+}
+
+function createEmpty(){
+  var empty = {
+    cityLabel: ""
+  };
+
+  var arr = [[]];
+  for (let i = 0; i < 7; i++)
+    arr.push(empty);
+
+  return arr;
 }
 
 // GET CLOSEST SETTLEMENT TO GIVEN SETTLEMENT
@@ -136,4 +149,4 @@ function getClosest(dest, list, minDist = 0.04, score = 0, pairsList = []) {
 
 
 
-export { GetSettlement, getClosest };
+export { GetSettlement, getClosest, createEmpty };

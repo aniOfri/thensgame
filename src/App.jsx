@@ -27,7 +27,6 @@ function App() {
     }, {})
 
     
-  const socket = io.connect("http://localhost:3000"); 
 
   const [timerEnabled, setTimerEnabled] = useState(COOKIES["Timer"]);
   const [showInfo, setShowInfo] = useState(COOKIES["ShowInfo"]);
@@ -43,6 +42,10 @@ function App() {
   const [users, setUsers] = useState(0);
   const [host, setHost] = useState(false);
   const [dots, setDots] = useState(".");
+
+  let socket;
+  if (isMultiplayer)
+    socket = io.connect("http://localhost:3000"); 
 
   async function joinRoom(){
     if (username !== "" && room !== ""){
@@ -82,24 +85,27 @@ function App() {
   }, [waitingRoom, dots]);
 
   useEffect(()=>{
-    socket.on("current_users", (data) =>{
-        console.log("Data:", data);
-        setUsers(data);
-    });
+    if (isMultiplayer){
+      socket.on("current_users", (data) =>{
+          setUsers(data);
+      });
+  }
   }, [socket, users]);
 
   useEffect(()=>{
     return async () =>{
-        if (users == 0)
+        if (users == 0 && isMultiplayer)
           await socket.emit("request_users", room);
     }
   }, [socket, dots]);
 
   useEffect(()=>{
-    if (users == 1)
-      setHost(true);
-    else if (users == 2)
+    if (isMultiplayer)  {
+      if (users == 1)
+        setHost(true);
+      else if (users == 2)
       startGame();
+    }   
   }, [socket, users, dots]);
 
   function startMultiplayer(){
@@ -116,7 +122,7 @@ function App() {
   let jsx;
   if (menu) jsx = (<Menu users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
-    jsx = (<Game cookies={COOKIES} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
+    jsx = (<Game cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
     <div dir="rtl" className="App">

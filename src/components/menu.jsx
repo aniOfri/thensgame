@@ -81,7 +81,7 @@ function Menu(props) {
                     <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
                     <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
                     <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> {mode}</Button><br></br>
-                    <Button className="startButton" variant="outlined" onClick={() => { props.setIsMultiplayer(true) }}> משחק רב משתתפים</Button>
+                    <Button className="startButton" variant="outlined" disabled > משחק רב משתתפים (בקרוב..) </Button>{/*onClick={() => { props.setIsMultiplayer(true) }}*/}
                 </div>
             );
         }
@@ -109,7 +109,6 @@ function Menu(props) {
                     <h1 className="menuTitle ">חדר המתנה</h1><br></br>
                     {list}<br></br>
                     {props.users}/2<br></br>
-                    <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> התחל משחק</Button>
                 </div>
             )
             }
