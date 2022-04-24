@@ -44,16 +44,14 @@ const createServer = async () =>
 		socket.on("join_room", (data) =>{
 			socket.join(data.room);
 			sockets += 1;
-			console.log(sockets);
+			console.log("Emitting \""+sockets+"\" to room "+data.room);
 			socket.broadcast.to(data.room).emit("current_users", sockets);
 		});
 
 		socket.on("request_users", (room) =>{
-			console.log(sockets);
+			console.log("Emitting \""+sockets+"\" to room "+room);
 			socket.broadcast.to(room).emit("current_users", sockets);
 		});
-
-
 
 		socket.on("disconnecting", ()=>{
 			sockets -= 1;

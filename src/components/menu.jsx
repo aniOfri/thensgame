@@ -100,15 +100,15 @@ function Menu(props) {
                 );
             }
             else{
-            console.log(props.users)
             let list;
-            if (props.users.length == 0)
-                list = "מחכים לשחקן נוסף.."
+            if (props.users < 2)
+                list = "מחכים לשחקן נוסף"+props.dots;
             
             return (
                 <div>
                     <h1 className="menuTitle ">חדר המתנה</h1><br></br>
                     {list}<br></br>
+                    {props.users}/2<br></br>
                     <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> התחל משחק</Button>
                 </div>
             )

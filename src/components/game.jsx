@@ -29,21 +29,11 @@ function Game(props) {
         setHeight(window.innerHeight);
     }
 
-    useEffect(async () => {
-        if (props.host){
-            var data = {
-                room: props.room,
-                settlements: settlements
-            }
-            await props.socket.emit("send_question", data);
-        }
-        else{
-            console.log("NOT HOST")
-            props.socket.on("recieve_question", (data) =>{
-                setSettlement(data);
-            })
-        }
-    }, [props.socket, settlements]);
+    useEffect(()=>{
+        props.socket.on("recieve_question", (data) =>{
+            setSettlement(data);
+        })
+    }, [props.socket]);
 
     useEffect(() => {
         window.addEventListener('resize', handleWindowSizeChange);
@@ -157,9 +147,16 @@ function Game(props) {
         setPairs(allpairs);
     }
 
-    function nextRound() {
+    async function nextRound() {
         addToPairs();
         setSettlements(GetSettlement(settlements[0], streak, lastSettlements, props.minPop, pairs))
+        if (props.multiplayer && props.host){
+            var data = {
+                room: props.room,
+                settlements: settlements
+            }
+            await props.socket.emit("send_question", data);
+        }
         setPause(false);
         updateLastSettlements(settlements[0][0]);
         if (!correct) {
