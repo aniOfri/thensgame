@@ -31,7 +31,7 @@ function Game(props) {
         setWidth(window.innerWidth);
         setHeight(window.innerHeight);
     }
-
+    
     useEffect(()=>{
         if (props.isMultiplayer){
             socket.on("receive_question", (data) =>{
@@ -48,24 +48,25 @@ function Game(props) {
     }, []);
 
     useEffect(() => {
-        let interval = null;
+        if (props.timerEnabled){
+            let interval = null;
 
-        if (props.isActive) {
-            interval = setInterval(() => {
-                setTime((time) => time + 10);
-                if (time >= 9990){
-                    props.setIsActive(false);
-                    Choice(7);
-                }
-                    
-            }, 10);
-        } else {
-            console.log(time);
-            clearInterval(interval);
+            if (props.isActive) {
+                interval = setInterval(() => {
+                    setTime((time) => time + 10);
+                    if (time >= 9990){
+                        props.setIsActive(false);
+                        Choice(7);
+                    }
+                        
+                }, 10);
+            } else {
+                clearInterval(interval);
+            }
+            return () => {
+                clearInterval(interval);
+            };
         }
-        return () => {
-            clearInterval(interval);
-        };
     }, [props.isActive, time]);
 
     function Choice(choice) {
