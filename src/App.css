@@ -1,145 +1,160 @@
-body{
-  overflow:hidden;
+body {
+  overflow: hidden;
 }
 
 .App {
   text-align: center;
 }
 
-.title{
+.title {
   font-size: 25px;
-  margin-top: 5%;  
+  margin-top: 5%;
   margin-bottom: 0;
 }
 
-.streak{
+.streak {
   margin-top: 0.2%;
   margin-bottom: 2%;
 }
 
 .App-header {
-  cursor:default;
+  cursor: default;
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: calc(5px + 2vmin);
-  color: white;
+  color: rgb(234, 238, 255);
 }
 
-.fail{
+.fail {
   color: #e84135;
   font-size: 20px;
   font-weight: bold;
 }
 
 
-.success{
+.success {
   color: #1f8504;
   font-size: 20px;
   font-weight: bold;
 }
 
-.indicatorMobile{
+.indicatorMobile {
   margin-top: 80%;
 }
 
 
 .wrapper {
-  display:flex;
+  display: flex;
   justify-content: center;
   height: 150px;
 }
 
-.wrapperPause{
+.wrapperPause {
   margin-top: 10%;
   margin-bottom: auto;
   justify-content: center;
   height: 150px;
 }
 
-.horz{
-  flex-direction:row;
+.horz {
+  flex-direction: row;
   font-size: 1.2vmax;
 }
 
-.mobile{
+.mobile {
   display: block;
   font-size: 2vmax;
 }
 
-.mobile h1{
+.mobile h1 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-h1{
+h1 {
   width: fit-content;
-  display:inline-block; 
+  display: inline-block;
 }
 
-.center{
+.center {
   text-align: center;
   display: flex;
   flex-direction: column;
 }
 
-.center h1{
-  cursor:pointer;
+.center h1 {
+  cursor: pointer;
   transition: transform .2s;
 }
 
-.centerאבו h1:hover{
+.center h1:hover {
   transform: scale(1.2);
 }
 
-.left{
-  position:absolute;
+.left {
+  position: absolute;
   left: 0;
   width: 33%;
   z-index: 1;
 }
 
-.left h1{
-  cursor:pointer;
+.left h1 {
+  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  border: 1px solid rgb(234, 238, 255);
+  color: rgb(234, 238, 255); 
+  border-radius: 25px;
+  padding: 5px 15px 12px 15px;
+  cursor: pointer;
   transition: transform .2s;
 }
 
-.left h1:hover{
+.left h1:hover {
   transform: scale(1.2);
 }
 
-.right{
-  position:absolute;
+.right {
+  position: absolute;
   right: 0;
   width: 33%;
   z-index: 1;
 }
 
 
-.right h1{
-  cursor:pointer;
+.right h1 {
+  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  border: 1px solid rgb(234, 238, 255);
+  color: rgb(234, 238, 255); 
+  border-radius: 25px;
+  padding: 5px 15px 12px 15px;
+  cursor: pointer;
   transition: transform .2s;
 }
 
-.right h1:hover{
+.right h1:hover {
   transform: scale(1.2);
 }
 
-.middle{
-  position:absolute;
+.middle {
+  position: absolute;
   width: 33%;
   z-index: 1;
 }
 
 
-.middle h1{
-  cursor:pointer;
+.middle h1 {
+  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  border: 1px solid rgb(234, 238, 255);
+  color: rgb(234, 238, 255); 
+  border-radius: 25px;
+  padding: 5px 15px 12px 15px;
+  cursor: pointer;
   transition: transform .2s;
 }
 
-.middle h1:hover{
+.middle h1:hover {
   transform: scale(1.2);
 }
 
@@ -147,89 +162,113 @@ h1{
   justify-content: center;
 }
 
+.top h1{
+  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  border: 1px solid rgb(234, 238, 255);
+  color: rgb(234, 238, 255); 
+  border-radius: 25px;
+  padding: 5px 15px 12px 15px;
+}
+
 .middleVert {
   justify-content: center;
+}
+
+.middleVert h1{
+  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  border: 1px solid rgb(234, 238, 255);
+  color: rgb(234, 238, 255); 
+  border-radius: 25px;
+  padding: 5px 15px 12px 15px;
 }
 
 .bottom {
   justify-content: center;
 }
 
-.infoMobile{
-  margin-top:10%;
+.bottom h1{
+  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  border: 1px solid rgb(234, 238, 255);
+  color: rgb(234, 238, 255); 
+  border-radius: 25px;
+  padding: 5px 15px 12px 15px;
+}
+
+.infoMobile {
+  margin-top: 10%;
   padding: 5px 5px 5px 5px;
 }
 
 
-.settingsImage{
+.settingsImage {
   position: absolute;
   height: 25px;
   right: 0;
-  padding: 17px  17px  17px  17px ;
+  padding: 17px 17px 17px 17px;
 }
 
-.closeImage{
+.closeImage {
   position: absolute;
   height: 25px;
   left: 0;
-  padding: 17px  17px  17px  17px ;
+  padding: 17px 17px 17px 17px;
 }
 
 
-.footer{
-  position:absolute;
+.footer {
+  position: absolute;
   bottom: 0;
   padding: 2px 15px;
   font-size: 10px;
   left: 0;
 }
 
-.footer p{
+.footer p {
   text-align: left;
 }
 
-.settingsDiv{
+.settingsDiv {
   padding: 5px 25px 25px 25px;
   background-color: #3D434F;
   height: 100%;
 }
 
-.smallText{
+.smallText {
   margin-top: 0px;
   margin-bottom: 0px;
   font-size: 10px;
 }
 
-.menuTitle{
+.menuTitle {
   margin-top: 15vmax;
-  margin-bottom:5vmax;
+  margin-bottom: 5vmax;
 }
 
 
-.MuiButton-root.startButton{
+.MuiButton-root.startButton {
   padding: 10px 10px 10px 10px;
-  color: white;
-  border: 1px #3D434F solid;
+  color: rgb(234, 238, 255);
+  border: 1px rgb(234, 238, 255) solid;
   background-color: #3D434F;
   transition: transform .2s;
   margin-top: 25px;
 }
 
-.MuiButton-root.startButton:hover{
+.MuiButton-root.startButton:hover {
   transform: scale(1.1);
-  color: white;
-  border: 1px #3D434F solid;
+  color: rgb(234, 238, 255);
+  border: 1px rgb(234, 238, 255) solid;
   background-color: #3D434F
 }
 
-.controller{
+.controller {
   margin-top: 10px;
 }
 
-.setting{
+.setting {
   margin-bottom: 3%;
 }
 
-.settingTitle{
+.settingTitle {
   margin-bottom: 1%;
 }

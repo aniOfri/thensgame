@@ -2,6 +2,9 @@
 // Data
 import LargeSettlementsList from '../data/largesettlements.json';
 
+// Components
+import Button from '@mui/material/Button';
+
 // Modules
 import { useState, useEffect } from 'react'
 import { calcCrow, timerHTML } from '../modules/Calculators';
@@ -224,10 +227,10 @@ function Game(props) {
             indicatorSentence = settlements[0][choice].cityLabel+" היא תשובה "+ answer;
         else
             indicatorSentence = "נגמר הזמן.";
-        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br></div>) : (<div><h1>המשך</h1></div>)
+        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br> <Button className="startButton">המשך</Button></div>) : (<div><Button className="startButton">המשך</Button></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
-                <p className="streak">{highscore} <br></br>  ניקוד:  {streak} <br></br>  {timerHTML(props.timerEnabled, time)}</p>
+                <p className="streak">{highscore} <br></br>  ניקוד:  {streak}</p>
                 <div className='wrapperPause center'>
                     <p className={indicator}>{indicatorSentence}</p>
                     {moreInfo}
