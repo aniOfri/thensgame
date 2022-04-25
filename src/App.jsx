@@ -26,8 +26,6 @@ function App() {
       }
     }, {})
 
-    
-
   const [timerEnabled, setTimerEnabled] = useState(COOKIES["Timer"]);
   const [showInfo, setShowInfo] = useState(COOKIES["ShowInfo"]);
   const [minPop, setMinPop] = useState(parseInt(COOKIES["MinPop"]));
