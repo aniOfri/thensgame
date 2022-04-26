@@ -80,8 +80,8 @@ function Menu(props) {
                 <div>
                     <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
                     <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
-                    <Button className="startButton" variant="outlined" onClick={() => { props.startGame() }}> {mode}</Button><br></br>
-                    <Button className="startButton" variant="outlined" disabled > משחק רב משתתפים (בקרוב..) </Button>{/*onClick={() => { props.setIsMultiplayer(true) }}*/}
+                    <div className="h1button" ><h1  onClick={() => { props.startGame() }}> {mode}</h1></div><br></br>
+                    <div className="h1button nohover"><h1 className="smallText"> משחק רב משתתפים (בקרוב..) </h1></div>{/*onClick={() => { props.setIsMultiplayer(true) }}*/}
                 </div>
             );
         }

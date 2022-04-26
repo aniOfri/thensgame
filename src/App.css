@@ -3,31 +3,52 @@ body {
 }
 
 .App {
-  text-align: center;
-}
-
-.title {
-  font-size: 25px;
-  margin-top: 5%;
-  margin-bottom: 0;
-}
-
-.streak {
-  margin-top: 0.2%;
-  margin-bottom: 2%;
-}
-
-.App-header {
   cursor: default;
   background-image: url("./data/background.png");
   background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   font-size: calc(5px + 2vmin);
   color: rgb(234, 238, 255);
+  overflow: hidden;
 }
+
+div.text{
+  z-index:2;
+  text-align: center;
+}
+
+.title {
+  font-size: 8vmin;
+  margin-top: 5%;
+  margin-bottom: 0;
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.streak {
+  font-size: 5vmin;
+  margin-top: 0.2%;
+  margin-bottom: 2%;
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.titleCity{
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
 
 .fail {
   color: #e84135;
@@ -37,7 +58,7 @@ body {
 
 
 .success {
-  color: #1f8504;
+  color: #329e14;
   font-size: 20px;
   font-weight: bold;
 }
@@ -91,10 +112,6 @@ h1 {
   transition: transform .2s;
 }
 
-.center h1:hover {
-  transform: scale(1.2);
-}
-
 .left {
   position: absolute;
   left: 0;
@@ -102,9 +119,9 @@ h1 {
   z-index: 1;
 }
 
-.left h1 {
-  background-image: linear-gradient(144deg, #28dd1e, #21cd4c 50%, #52d22b);
-  border: 1px solid rgb(234, 238, 255);
+.h1button h1{
+  background-color: #31da5b;
+  box-shadow: 5px 5px #888888;
   color: rgb(234, 238, 255); 
   border-radius: 25px;
   padding: 5px 15px 12px 15px;
@@ -112,8 +129,19 @@ h1 {
   transition: transform .2s;
 }
 
-.left h1:hover {
+.h1button h1:hover{
+  box-shadow: none;
   transform: scale(1.2);
+}
+
+.nohover h1{
+  box-shadow:none;
+  background-color: #3D434F;
+  color:darkgrey
+}
+
+.nohover h1:hover{
+  transform: scale(1);
 }
 
 .right {
@@ -123,83 +151,32 @@ h1 {
   z-index: 1;
 }
 
-
-.right h1 {
-  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
-  border: 1px solid rgb(234, 238, 255);
-  color: rgb(234, 238, 255); 
-  border-radius: 25px;
-  padding: 5px 15px 12px 15px;
-  cursor: pointer;
-  transition: transform .2s;
-}
-
-.right h1:hover {
-  transform: scale(1.2);
-}
-
 .middle {
   position: absolute;
   width: 33%;
   z-index: 1;
 }
 
-
-.middle h1 {
-  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
-  border: 1px solid rgb(234, 238, 255);
-  color: rgb(234, 238, 255); 
-  border-radius: 25px;
-  padding: 5px 15px 12px 15px;
-  cursor: pointer;
-  transition: transform .2s;
-}
-
-.middle h1:hover {
-  transform: scale(1.2);
-}
-
 .top {
   justify-content: center;
-}
-
-.top h1{
-  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
-  border: 1px solid rgb(234, 238, 255);
-  color: rgb(234, 238, 255); 
-  border-radius: 25px;
-  padding: 5px 15px 12px 15px;
 }
 
 .middleVert {
   justify-content: center;
 }
-
-.middleVert h1{
-  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
-  border: 1px solid rgb(234, 238, 255);
-  color: rgb(234, 238, 255); 
-  border-radius: 25px;
-  padding: 5px 15px 12px 15px;
-}
-
 .bottom {
   justify-content: center;
-}
-
-.bottom h1{
-  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
-  border: 1px solid rgb(234, 238, 255);
-  color: rgb(234, 238, 255); 
-  border-radius: 25px;
-  padding: 5px 15px 12px 15px;
 }
 
 .infoMobile {
   margin-top: 10%;
   padding: 5px 5px 5px 5px;
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
-
 
 .settingsImage {
   position: absolute;
@@ -241,8 +218,14 @@ h1 {
 }
 
 .menuTitle {
+  font-size: 5vmax;
   margin-top: 15vmax;
   margin-bottom: 5vmax;
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 
@@ -275,5 +258,8 @@ h1 {
 }
 
 .cloud{
-  z-index: 0;
+  position:absolute;
+  left: 0;
+  top: 0;
+  z-index:0;
 }

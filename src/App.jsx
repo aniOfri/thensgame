@@ -125,10 +125,10 @@ function App() {
 
   return (
     <div dir="rtl" className="App">
-      <header className="App-header">
-        <Cloud/>
-        {jsx}
-      </header>
+        <Cloud className="cloud"/>
+        <div className="text">
+          {jsx}
+        </div>
     </div>
   );
 }

@@ -227,7 +227,7 @@ function Game(props) {
             indicatorSentence = settlements[0][choice].cityLabel+" היא תשובה "+ answer;
         else
             indicatorSentence = "נגמר הזמן.";
-        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br> <Button className="startButton">המשך</Button></div>) : (<div><Button className="startButton">המשך</Button></div>)
+        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br> <div className="h1button"><h1>המשך</h1></div></div>) : (<div className="h1button"><h1>המשך</h1></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
                 <p className="streak">{highscore} <br></br>  ניקוד:  {streak}</p>
@@ -248,6 +248,9 @@ function Game(props) {
         let wrapper = isMobile ? "wrapper mobile" : "wrapper horz";
         wrapper += mobileHeight ? " sizeDownText" : "";
 
+        firstClass += " h1button";
+        secondClass += " h1button";
+        thirdClass += " h1button";
 
         jsx = (<div>
             <p className="streak">ניקוד: {streak}</p>
@@ -272,7 +275,7 @@ function Game(props) {
 
     return (
         <div>
-            <p className="title">איזו עיר יותר קרובה?</p>
+            <h1 className="title">איזו עיר יותר קרובה?</h1><br></br>
             {jsx}
         </div>
     )
