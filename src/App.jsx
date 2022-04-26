@@ -2,8 +2,9 @@
 import './App.css'
 
 // Components
-import Menu from './components/menu'
+import Menu from './components/menu';
 import Game from './components/game';
+import Cloud from './components/cloud';
 
 // Modules
 import { useEffect, useState } from 'react'
@@ -125,6 +126,7 @@ function App() {
   return (
     <div dir="rtl" className="App">
       <header className="App-header">
+        <Cloud/>
         {jsx}
       </header>
     </div>

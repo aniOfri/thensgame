@@ -19,7 +19,8 @@ body {
 
 .App-header {
   cursor: default;
-  background-color: #282c34;
+  background-image: url("./data/background.png");
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -102,7 +103,7 @@ h1 {
 }
 
 .left h1 {
-  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  background-image: linear-gradient(144deg, #28dd1e, #21cd4c 50%, #52d22b);
   border: 1px solid rgb(234, 238, 255);
   color: rgb(234, 238, 255); 
   border-radius: 25px;
@@ -124,7 +125,7 @@ h1 {
 
 
 .right h1 {
-  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
   border: 1px solid rgb(234, 238, 255);
   color: rgb(234, 238, 255); 
   border-radius: 25px;
@@ -145,7 +146,7 @@ h1 {
 
 
 .middle h1 {
-  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
   border: 1px solid rgb(234, 238, 255);
   color: rgb(234, 238, 255); 
   border-radius: 25px;
@@ -163,7 +164,7 @@ h1 {
 }
 
 .top h1{
-  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
   border: 1px solid rgb(234, 238, 255);
   color: rgb(234, 238, 255); 
   border-radius: 25px;
@@ -175,7 +176,7 @@ h1 {
 }
 
 .middleVert h1{
-  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
   border: 1px solid rgb(234, 238, 255);
   color: rgb(234, 238, 255); 
   border-radius: 25px;
@@ -187,7 +188,7 @@ h1 {
 }
 
 .bottom h1{
-  background-image: linear-gradient(144deg, #3D434F, #40434a 50%, #515867);
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
   border: 1px solid rgb(234, 238, 255);
   color: rgb(234, 238, 255); 
   border-radius: 25px;
@@ -249,7 +250,7 @@ h1 {
   padding: 10px 10px 10px 10px;
   color: rgb(234, 238, 255);
   border: 1px rgb(234, 238, 255) solid;
-  background-color: #3D434F;
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
   transition: transform .2s;
   margin-top: 25px;
 }
@@ -258,7 +259,7 @@ h1 {
   transform: scale(1.1);
   color: rgb(234, 238, 255);
   border: 1px rgb(234, 238, 255) solid;
-  background-color: #3D434F
+  background-image: linear-gradient(144deg, #28dd1e, #31da5b 50%, #52d22b);
 }
 
 .controller {
@@ -271,4 +272,8 @@ h1 {
 
 .settingTitle {
   margin-bottom: 1%;
+}
+
+.cloud{
+  z-index: 0;
 }
