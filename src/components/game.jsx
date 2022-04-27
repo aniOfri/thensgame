@@ -3,9 +3,6 @@
 import LargeSettlementsList from '../data/largesettlements.json';
 import heart from '../data/heart.png';
 
-// Components
-import Button from '@mui/material/Button';
-
 // Modules
 import { useState, useEffect } from 'react'
 import { calcCrow, timerHTML } from '../modules/Calculators';
