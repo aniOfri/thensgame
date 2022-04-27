@@ -1,6 +1,7 @@
 
 // Data
 import LargeSettlementsList from '../data/largesettlements.json';
+import heart from '../data/heart.png';
 
 // Components
 import Button from '@mui/material/Button';
@@ -272,9 +273,9 @@ function Game(props) {
             </div>
         </div>);
     }
-
     return (
         <div>
+			 <br></br>
             <h1 className="title">איזו עיר יותר קרובה?</h1><br></br>
             {jsx}
         </div>

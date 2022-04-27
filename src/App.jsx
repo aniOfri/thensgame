@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react'
 import { checkCookies, createCookies } from './modules/Cookies';
 import io from 'socket.io-client';
 
-
 function App() {
   if (checkCookies())
     createCookies();
@@ -125,7 +124,8 @@ function App() {
 
   return (
     <div dir="rtl" className="App">
-        <Cloud className="cloud"/>
+        <Cloud className="cloud" size="0.4" x_offset="0" y_offset="0"/>
+        <Cloud className="cloud" size="0.2" x_offset="600" y_offset="750"/>
         <div className="text">
           {jsx}
         </div>

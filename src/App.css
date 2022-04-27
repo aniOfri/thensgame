@@ -1,5 +1,5 @@
 body {
-  overflow: hidden;
+  overflow: clip;
 }
 
 .App {
@@ -11,7 +11,7 @@ body {
   flex-direction: column;
   font-size: calc(5px + 2vmin);
   color: rgb(234, 238, 255);
-  overflow: hidden;
+  overflow: clip;
 }
 
 div.text{
@@ -21,7 +21,7 @@ div.text{
 
 .title {
   font-size: 8vmin;
-  margin-top: 5%;
+  margin-top: 1%;
   margin-bottom: 0;
   text-shadow:
   -1px -1px 0 #000,  
@@ -258,8 +258,17 @@ h1 {
 }
 
 .cloud{
+  width: 100%;
   position:absolute;
   left: 0;
   top: 0;
   z-index:0;
+  transition: transform 1s cubic-bezier(.96,-1.07,.48,.85);	
+  object-fit: scale-down;
+}
+
+.heart{
+  height: 15px;
+
+  padding: 30px 17px 0px 17px;
 }
