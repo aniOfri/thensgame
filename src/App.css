@@ -1,7 +1,6 @@
 body {
   overflow: clip;
 }
-
 .App {
   cursor: default;
   background-image: url("./data/background.png");
@@ -21,7 +20,7 @@ div.text{
 
 .title {
   font-size: 8vmin;
-  margin-top: 1%;
+  margin-top: 10%;
   margin-bottom: 0;
   text-shadow:
   -1px -1px 0 #000,  
@@ -214,7 +213,7 @@ h1 {
 .smallText {
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .menuTitle {
@@ -250,8 +249,18 @@ h1 {
 }
 
 .setting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 3%;
+  font-size:20px;
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
+
 
 .settingTitle {
   margin-bottom: 1%;
@@ -266,9 +275,12 @@ h1 {
   transition: transform 1s cubic-bezier(.96,-1.07,.48,.85);	
   object-fit: scale-down;
 }
-
+.heartDiv{
+  position:absolute;
+  top: 0;
+  left: 0;
+}
 .heart{
-  height: 15px;
-
-  padding: 30px 17px 0px 17px;
+  height: 20px;
+  padding: 22px 5px 0px 15px;
 }

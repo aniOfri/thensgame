@@ -27,6 +27,11 @@ function Settings(props) {
         document.cookie = "ShowInfo=" + props.showInfo;
     }
 
+    function handleHealth(e) {
+        props.setIsHealth(e);
+        document.cookie = "Health=" + props.isHealth;
+    }
+
     return (
         <div>
             <img src={closeLogo} className="closeImage" onClick={() => { props.setSettings(!props.settings) }}></img>
@@ -36,7 +41,9 @@ function Settings(props) {
                     <p className="settingTitle">אוכלוסיה מינימלית</p>
                     <p className="smallText">קביעת האוכלוסיה המינימלית של כל עיר במשחק</p>
                 </div>
-                <Slider className="controller" value={props.minPop} min={0} max={50000} step={1000} valueLabelDisplay="auto" onChange={handleMinPop} />
+                <div style={{width: "40%"}} >
+                    <Slider className="controller" value={props.minPop} min={0} max={50000} step={1000} valueLabelDisplay="auto" onChange={handleMinPop} />
+                </div>
             </div>
             <div className="setting">
                 <div>
@@ -53,6 +60,13 @@ function Settings(props) {
                 </div>
                 <Switch className="controller" onColor="#86d3ff" onHandleColor="#2693e6" uncheckedIcon={false} checkedIcon={false} checked={props.showInfo} onChange={handleInfo} />
             </div>
+            <div className="setting">
+                <div>
+                    <p className="settingTitle">פסילות</p>
+                    <p className="smallText">קבל 3 פסילות</p>
+                </div>
+                <Switch className="controller" onColor="#86d3ff" onHandleColor="#2693e6" uncheckedIcon={false} checkedIcon={false} checked={props.isHealth} onChange={handleHealth} />
+            </div>
             <div className="footer">
                 <p dir="ltr" >© 2022 Ofri Gutman</p>
             </div>
@@ -67,8 +81,9 @@ function Menu(props) {
         document.cookie = "MinPop=" + props.minPop;
         document.cookie = "Timer=" + props.timerEnabled;
         document.cookie = "ShowInfo=" + props.showInfo;
+        document.cookie = "Health=" + props.isHealth;
 
-        return <Settings setShowInfo={props.setShowInfo} showInfo={props.showInfo} setMinPop={props.setMinPop} minPop={props.minPop} setTimerEnabled={props.setTimerEnabled} timerEnabled={props.timerEnabled} setSettings={setSettings} settings={settings} />
+        return <Settings isHealth={props.isHealth} setIsHealth={props.setIsHealth} setShowInfo={props.setShowInfo} showInfo={props.showInfo} setMinPop={props.setMinPop} minPop={props.minPop} setTimerEnabled={props.setTimerEnabled} timerEnabled={props.timerEnabled} setSettings={setSettings} settings={settings} />
     }
     else {
         let mode = "משחק לבד";

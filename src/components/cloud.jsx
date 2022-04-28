@@ -41,7 +41,6 @@ function Cloud(props){
         };
     }, [cloudPosY]);
 
-	console.log(cloudPosY);
     return (
         <div style={{transform: "scale("+props.size+") translateY("+cloudPosY+"px) translateX("+props.x_offset+"px)"}} className="cloud">
             <img src={bigCloud}></img>

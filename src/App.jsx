@@ -28,6 +28,7 @@ function App() {
 
   const [timerEnabled, setTimerEnabled] = useState(COOKIES["Timer"]);
   const [showInfo, setShowInfo] = useState(COOKIES["ShowInfo"]);
+  const [isHealth, setIsHealth] = useState(COOKIES["Health"]);
   const [minPop, setMinPop] = useState(parseInt(COOKIES["MinPop"]));
   const [isActive, setIsActive] = useState(false);
   const [menu, setMenu] = useState(true);
@@ -118,12 +119,12 @@ function App() {
   }
   
   let jsx;
-  if (menu) jsx = (<Menu users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
+  if (menu) jsx = (<Menu isHealth={isHealth} setIsHealth={setIsHealth} users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
-    jsx = (<Game cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
+    jsx = (<Game isHealth={isHealth} cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
-    <div dir="rtl" className="App">
+    <div dir="rtl" className="App">.
         <Cloud className="cloud" size="0.4" x_offset="0" y_offset="0"/>
         <Cloud className="cloud" size="0.2" x_offset="600" y_offset="750"/>
         <div className="text">

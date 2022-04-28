@@ -19,6 +19,7 @@ function Game(props) {
     const [settlements, setSettlements] = useState(props.isMultiplayer && !props.host ? createEmpty() : GetSettlement([null], streak, lastSettlements, props.minPop, pairs));
     const [choice, setChoice] = useState(0);
     const [correct, setCorrect] = useState(true);
+    const [health, setHealth] = useState(3);
 
     let socket = null;
     if (props.isMultiplayer)
@@ -166,13 +167,15 @@ function Game(props) {
         setSettlements(GetSettlement(settlements[0], streak, lastSettlements, props.minPop, pairs))
         setPause(false);
         updateLastSettlements(settlements[0][0]);
-        if (!correct) {
+        if (!correct && health-1 == 0) {
             setPairs([]);
             props.setMenu(true);
             setStreak(0);
             document.cookie = "Score=0";
             setCorrect(true);
         }
+        else if (!correct)
+            setHealth(health-1);
     }
 
     if (props.isMultiplayer && props.host){
@@ -270,9 +273,16 @@ function Game(props) {
             </div>
         </div>);
     }
+    let hearts = [];
+    if (props.isHealth){
+        for (let i = 0; i < health; i++)
+            hearts.push(<img src={heart} className="heart"/>);
+    }
     return (
         <div>
-			 <br></br>
+            <div className="heartDiv">
+                {hearts}
+            </div>
             <h1 className="title">איזו עיר יותר קרובה?</h1><br></br>
             {jsx}
         </div>
