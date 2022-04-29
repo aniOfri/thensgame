@@ -154,6 +154,9 @@ function Game(props) {
             setHealth(health-1);
     }
 
+
+    
+
     let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {

@@ -96,7 +96,7 @@ function Menu(props) {
                     <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
                     <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
                     <div className="h1button" ><h1  onClick={() => { props.startGame() }}> {mode}</h1></div><br></br>
-                    <div className="h1button nohover"><h1 className="smallText"> משחק רב משתתפים (בקרוב..) </h1></div>{/*onClick={() => { props.setIsMultiplayer(true) }}*/}
+                    <div className="h1button nohover" onClick={() => { props.startMultiplayer() }}><h1 className="smallText"> משחק רב משתתפים (בקרוב..) </h1></div>{/*onClick={() => { props.setIsMultiplayer(true) }}*/}
                 </div>
             );
         }

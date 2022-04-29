@@ -7,9 +7,9 @@ import Game from './components/game';
 import Cloud from './components/cloud';
 
 // Modules
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { checkCookies, createCookies } from './modules/Cookies';
-import io from 'socket.io-client';
+import { SocketContext } from './modules/socket';
 
 function App() {
   if (checkCookies())
@@ -45,12 +45,9 @@ function App() {
   const [users, setUsers] = useState(0);
   const [host, setHost] = useState(false);
   const [dots, setDots] = useState(".");
-  const [socket, setSocket] = useState(null);
 
-  if (isMultiplayer && socket == null){
-    setSocket(io.connect("http://localhost:3000")); 
-  }
-
+  const socket = useContext(SocketContext);
+  
   async function joinRoom(){
     if (username !== "" && room !== ""){
       const data = {
@@ -86,7 +83,6 @@ function App() {
             else
               setDots(".");
               
-            setSocket(io.connect("http://localhost:3000")); 
         }, 1000);
     } else {
           interval = setInterval(() => {
@@ -104,18 +100,35 @@ function App() {
 
   useEffect(()=>{
     if (isMultiplayer){
-      socket.on("current_users", (data) =>{
-          setUsers(data);
-      });
-    }
-  }, [socket, users, dots]);
+      console.log("isMultiplayer")
+      if (users == 0){
+        console.log("emitting request")
+        socket.emit("request_users", room);
+      }
 
-  useEffect(()=>{
+      const handleUsers = (data) => {
+        console.log("set current users")
+        setUsers(data);
+      }
+      
+      socket.on("current_users", handleUsers);
+
+      return () => {
+        console.log("off");
+        socket.off("current_users", handleUsers)
+      }
+    }
+    else {
+      console.log("isnotmmultiplayer")
+    }
+  }, [socket]);
+
+  /*useEffect(()=>{
     return async () =>{
         if (users == 0 && isMultiplayer)
           await socket.emit("request_users", room);
     }
-  }, [socket, dots]);
+  }, [socket, dots]);*/
 
   useEffect(()=>{
     if (isMultiplayer)  {
@@ -124,7 +137,7 @@ function App() {
       else if (users == 2)
       startGame();
     }   
-  }, [socket, users, dots]);
+  }, [users, dots]);
 
   function startMultiplayer(){
     setIsMultiplayer(true);
@@ -137,6 +150,7 @@ function App() {
     }
   }
   
+  console.log("Multiplayer ", isMultiplayer);
   let jsx;
   if (menu) jsx = (<Menu isHealth={isHealth} setIsHealth={setIsHealth} users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
