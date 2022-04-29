@@ -32,6 +32,10 @@ function App() {
   const [minPop, setMinPop] = useState(parseInt(COOKIES["MinPop"]));
   const [isActive, setIsActive] = useState(false);
   const [menu, setMenu] = useState(true);
+  
+  // Mobile related States
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
 
   // TEMPORARY
   const [username, setUsername] = useState("");
@@ -41,10 +45,11 @@ function App() {
   const [users, setUsers] = useState(0);
   const [host, setHost] = useState(false);
   const [dots, setDots] = useState(".");
+  const [socket, setSocket] = useState(null);
 
-  let socket;
-  if (isMultiplayer)
-    socket = io.connect("http://localhost:3000"); 
+  if (isMultiplayer && socket == null){
+    setSocket(io.connect("http://localhost:3000")); 
+  }
 
   async function joinRoom(){
     if (username !== "" && room !== ""){
@@ -57,6 +62,18 @@ function App() {
     }
   }
 
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+  }
+
+  useEffect(() => {
+      window.addEventListener('resize', handleWindowSizeChange);
+      return () => {
+          window.removeEventListener('resize', handleWindowSizeChange);
+      }
+  }, []);
+
   useEffect(() => {
     let interval = null;
 
@@ -68,6 +85,8 @@ function App() {
               setDots("...");
             else
               setDots(".");
+              
+            setSocket(io.connect("http://localhost:3000")); 
         }, 1000);
     } else {
           interval = setInterval(() => {
@@ -88,8 +107,8 @@ function App() {
       socket.on("current_users", (data) =>{
           setUsers(data);
       });
-  }
-  }, [socket, users]);
+    }
+  }, [socket, users, dots]);
 
   useEffect(()=>{
     return async () =>{
@@ -113,7 +132,7 @@ function App() {
 
   function startGame() {
     setMenu(false);
-    if (timerEnabled) {
+    if (timerEnabled || isMultiplayer) {
       setIsActive(true);
     }
   }
@@ -121,12 +140,12 @@ function App() {
   let jsx;
   if (menu) jsx = (<Menu isHealth={isHealth} setIsHealth={setIsHealth} users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
-    jsx = (<Game isHealth={isHealth} cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
+    jsx = (<Game width={width} height={height} isHealth={isHealth} cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
     <div dir="rtl" className="App">.
-        <Cloud className="cloud" size="0.4" x_offset="0" y_offset="0"/>
-        <Cloud className="cloud" size="0.2" x_offset="600" y_offset="750"/>
+        <Cloud className="cloud" big={true} size={width < height ? width/1000 : height/1000} x_offset={width<height ? width/500 : -1.2*height} y_offset="0"/>
+        <Cloud className="cloud" size={width < height ? width/2000 : height/2000} x_offset={width<height ? width/0.6 : 600} y_offset={width < height ? 6*height/7 : 3*height/4}/>
         <div className="text">
           {jsx}
         </div>

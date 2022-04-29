@@ -6,11 +6,10 @@ const path = require("path");
 const {Server} = require("socket.io");
 const forceSsl = require('force-ssl-heroku');
 
-
 const createServer = async () =>
 {
 	var sockets = 0;
-
+	
 	const app = express();
 
 	app.use(cors());
@@ -42,7 +41,7 @@ const createServer = async () =>
 
 		socket.on("send_question", (data) =>{
 			console.log("Emitting \""+data.settlements+"\" to room "+data.room);
-			socket.broadcast.to(data.room).emit("receive_question", data.settlements);
+			socket.broadcast.to(data.room).emit("recieve_question", data.settlements);
 		});
 
 		socket.on("join_room", (data) =>{
@@ -51,7 +50,7 @@ const createServer = async () =>
 			console.log("Emitting \""+sockets+"\" to room "+data.room);
 			socket.broadcast.to(data.room).emit("current_users", sockets);
 		});
-
+		
 		socket.on("request_users", (room) =>{
 			console.log("Emitting \""+sockets+"\" to room "+room);
 			socket.broadcast.to(room).emit("current_users", sockets);
@@ -68,7 +67,11 @@ const createServer = async () =>
 	
 	app.set('port', (process.env.PORT || 3000));
 
-	app.listen(app.get('port'));
+	//app.listen(app.get('port'));
+
+	server.listen(app.get('port'), () => {
+		console.log("SERVER RUNNING");
+	})
 };
 
 createServer();

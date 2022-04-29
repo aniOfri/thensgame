@@ -6,7 +6,7 @@ import heart from '../data/heart.png';
 // Modules
 import { useState, useEffect } from 'react'
 import { calcCrow, timerHTML } from '../modules/Calculators';
-import { GetSettlement, getClosest, createEmpty } from '../modules/Settlements'
+import { GetSettlement, getClosest } from '../modules/Settlements'
 import io from 'socket.io-client';
 
 function Game(props) {
@@ -16,41 +16,17 @@ function Game(props) {
     const [pause, setPause] = useState(false);
     const [pairs, setPairs] = useState([]);
     const [lastSettlements, setLastSetts] = useState([null]);
-    const [settlements, setSettlements] = useState(props.isMultiplayer && !props.host ? createEmpty() : GetSettlement([null], streak, lastSettlements, props.minPop, pairs));
+    const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, props.minPop, pairs));
     const [choice, setChoice] = useState(0);
     const [correct, setCorrect] = useState(true);
-    const [health, setHealth] = useState(3);
+    const [health, setHealth] = useState(props.isHealth ? 3 : 1);
+    const [socket, setSocket] = useState(null);
 
-    let socket = null;
-    if (props.isMultiplayer)
-        socket = io.connect("http://localhost:3000"); 
-
-    // Mobile related States
-    const [width, setWidth] = useState(window.innerWidth);
-    const [height, setHeight] = useState(window.innerHeight);
-
-    function handleWindowSizeChange() {
-        setWidth(window.innerWidth);
-        setHeight(window.innerHeight);
-    }
-    
-    useEffect(()=>{
-        if (props.isMultiplayer){
-            socket.on("receive_question", (data) =>{
-                setSettlement(data);
-            })
-        }
-    }, [socket, settlements]);
+    if (props.isMultiplayer && socket == null)
+      setSocket(io.connect("http://localhost:3000")); 
 
     useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (props.timerEnabled){
+        if (props.timerEnabled || props.isMultiplayer){
             let interval = null;
 
             if (props.isActive) {
@@ -60,7 +36,7 @@ function Game(props) {
                         props.setIsActive(false);
                         Choice(7);
                     }
-                        
+
                 }, 10);
             } else {
                 clearInterval(interval);
@@ -69,7 +45,7 @@ function Game(props) {
                 clearInterval(interval);
             };
         }
-    }, [props.isActive, time]);
+    }, [props.isActive, props.isMultiplayer, time]);
 
     function Choice(choice) {
         props.setIsActive(false);
@@ -178,14 +154,6 @@ function Game(props) {
             setHealth(health-1);
     }
 
-    if (props.isMultiplayer && props.host){
-        var data = {
-            room: props.room,
-            settlements: settlements
-        }
-        socket.emit("send_question", data);
-    }
-
     let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {
@@ -212,7 +180,7 @@ function Game(props) {
             highscore = "הניקוד הכי גבוה שלך הוא: " + props.cookies["Highscore"];
         }
 
-        const isMobile = width <= 520;
+        const isMobile = props.width <= 520 && props.width < (props.height-200);
 
         let information;
         if (isMobile) {
@@ -240,8 +208,8 @@ function Game(props) {
         )
     }
     else {
-        const isMobile = width <= 520;
-        const mobileHeight = height <= 600;
+        const isMobile = props.width <= 520 && props.width < (props.height-200);
+        const mobileHeight = props.height <= 600;
 
         let firstClass = isMobile ? "top" : "left";
         let secondClass = isMobile ? "middleVert" : "middle";

@@ -4,13 +4,15 @@ body {
 .App {
   cursor: default;
   background-image: url("./data/background.png");
-  background-size: cover;
+  background-size:cover;
+  background-position-x:center;
+  background-attachment: fixed;
   min-height: 100vh;
   display: flex;
+  height: auto;
   flex-direction: column;
   font-size: calc(5px + 2vmin);
-  color: rgb(234, 238, 255);
-  overflow: clip;
+  color: rgb(234, 238, 255);  
 }
 
 div.text{
@@ -18,9 +20,17 @@ div.text{
   text-align: center;
 }
 
+.timer{
+  text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
 .title {
   font-size: 8vmin;
-  margin-top: 10%;
+  margin-top: 5vmax;
   margin-bottom: 0;
   text-shadow:
   -1px -1px 0 #000,  
@@ -87,7 +97,7 @@ div.text{
 
 .mobile {
   display: block;
-  font-size: 2vmax;
+  font-size: 1.3vmax;
 }
 
 .mobile h1 {
@@ -120,7 +130,7 @@ h1 {
 
 .h1button h1{
   background-color: #31da5b;
-  box-shadow: 5px 5px #888888;
+  box-shadow: 5px 5px #40aa5a;
   color: rgb(234, 238, 255); 
   border-radius: 25px;
   padding: 5px 15px 12px 15px;
@@ -273,7 +283,7 @@ h1 {
   top: 0;
   z-index:0;
   transition: transform 1s cubic-bezier(.96,-1.07,.48,.85);	
-  object-fit: scale-down;
+  overflow-block: hidden;
 }
 .heartDiv{
   position:absolute;

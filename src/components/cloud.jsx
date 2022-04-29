@@ -8,22 +8,6 @@ import { useEffect, useState } from 'react'
 
 function Cloud(props){
     const [cloudPosY, setCloudPosY] = useState(parseInt(props.y_offset));
-    const [cloudUp, setCloudUp] = useState(true);
-	const [cloudDir, setCloudDir] = useState(1);
-
-    // Mobile related States
-    const [width, setWidth] = useState(window.innerWidth);
-
-    function handleWindowSizeChange() {
-        setWidth(window.innerWidth);
-    }
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
 
     useEffect(()=>{
         let interval = null;
@@ -41,9 +25,13 @@ function Cloud(props){
         };
     }, [cloudPosY]);
 
+    let cloudImg = smallCloud;
+    if (props.big)
+        cloudImg = bigCloud;
+
     return (
         <div style={{transform: "scale("+props.size+") translateY("+cloudPosY+"px) translateX("+props.x_offset+"px)"}} className="cloud">
-            <img src={bigCloud}></img>
+            <img src={cloudImg}></img>
         </div>
     );
 }

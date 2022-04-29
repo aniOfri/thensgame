@@ -97,7 +97,7 @@ function createEmpty(){
 
   var arr = [[]];
   for (let i = 0; i < 7; i++)
-    arr.push(empty);
+    arr[0].push(empty);
 
   return arr;
 }
