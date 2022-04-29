@@ -100,26 +100,19 @@ function App() {
 
   useEffect(()=>{
     if (isMultiplayer){
-      console.log("isMultiplayer")
       if (users == 0){
-        console.log("emitting request")
         socket.emit("request_users", room);
       }
 
       const handleUsers = (data) => {
-        console.log("set current users")
         setUsers(data);
       }
       
       socket.on("current_users", handleUsers);
 
       return () => {
-        console.log("off");
         socket.off("current_users", handleUsers)
       }
-    }
-    else {
-      console.log("isnotmmultiplayer")
     }
   }, [socket]);
 
@@ -150,14 +143,13 @@ function App() {
     }
   }
   
-  console.log("Multiplayer ", isMultiplayer);
   let jsx;
   if (menu) jsx = (<Menu isHealth={isHealth} setIsHealth={setIsHealth} users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
     jsx = (<Game width={width} height={height} isHealth={isHealth} cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
-    <div dir="rtl" className="App">.
+    <div dir="rtl" className="App">
         <Cloud className="cloud" big={true} size={width < height ? width/1000 : height/1000} x_offset={width<height ? width/500 : -1.2*height} y_offset="0"/>
         <Cloud className="cloud" size={width < height ? width/2000 : height/2000} x_offset={width<height ? width/0.6 : 600} y_offset={width < height ? 6*height/7 : 3*height/4}/>
         <div className="text">

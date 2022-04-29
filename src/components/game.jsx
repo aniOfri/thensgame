@@ -1,13 +1,14 @@
 
 // Data
-import LargeSettlementsList from '../data/largesettlements.json';
 import heart from '../data/heart.png';
 
 // Modules
 import { useState, useEffect } from 'react'
 import { calcCrow, timerHTML } from '../modules/Calculators';
-import { GetSettlement, getClosest } from '../modules/Settlements'
-import io from 'socket.io-client';
+import { GetSettlement } from '../modules/Settlements'
+import ConfettiComponent from './confetti';
+
+// Modules
 
 function Game(props) {
     // Game related states
@@ -20,10 +21,7 @@ function Game(props) {
     const [choice, setChoice] = useState(0);
     const [correct, setCorrect] = useState(true);
     const [health, setHealth] = useState(props.isHealth ? 3 : 1);
-    const [socket, setSocket] = useState(null);
-
-    if (props.isMultiplayer && socket == null)
-      setSocket(io.connect("http://localhost:3000")); 
+    const [confetti, setConfetti] = useState(0);
 
     useEffect(() => {
         if (props.timerEnabled || props.isMultiplayer){
@@ -52,6 +50,7 @@ function Game(props) {
         setChoice(choice);
 
         setCorrect(true)
+        setConfetti(confetti+50);
         if (choice == 1 && settlements[1] == 1) {
             setStreak(streak + 1);
         }
@@ -72,6 +71,7 @@ function Game(props) {
         }
         else {
             setCorrect(false);
+            setConfetti(confetti-50);
         }
 
         setPause(true);
@@ -154,25 +154,15 @@ function Game(props) {
             setHealth(health-1);
     }
 
-
-    
-
     let jsx;
     document.cookie = "Score=" + streak;
     if (pause) {
-        let closestLargeSettlement = getClosest(settlements[0][0], LargeSettlementsList, 0.04, streak)
-        let sentence1;
-        if (closestLargeSettlement.cityLabel != settlements[0][settlements[1]].cityLabel)
-            sentence1 = "ו" + Sentence(settlements[0][0], closestLargeSettlement);
-        else
-            sentence1 = "";
+        let sentence = Sentence(settlements[0][0], settlements[0][settlements[1]]);
 
-        let sentence2 = Sentence(settlements[0][0], settlements[0][settlements[1]]);
-
-        let indicator = "fail", answer = "לא נכונה.. נפסלת.";
+        let indicator = "fail", answer = "לא נכונה!";
         if (correct) {
             indicator = "success"
-            answer = "נכונה! +נקודה!"
+            answer = "נכונה!"
         }
 
         let highscore = ""
@@ -199,7 +189,7 @@ function Game(props) {
             indicatorSentence = settlements[0][choice].cityLabel+" היא תשובה "+ answer;
         else
             indicatorSentence = "נגמר הזמן.";
-        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence2}<br></br> {sentence1}</h1><br></br> <div className="h1button"><h1>המשך</h1></div></div>) : (<div className="h1button"><h1>המשך</h1></div>)
+        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence}</h1><br></br> <div className="h1button"><h1>המשך</h1></div></div>) : (<div className="h1button"><h1>המשך</h1></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
                 <p className="streak">{highscore} <br></br>  ניקוד:  {streak}</p>
@@ -247,7 +237,7 @@ function Game(props) {
     let hearts = [];
     if (props.isHealth){
         for (let i = 0; i < health; i++)
-            hearts.push(<img src={heart} className="heart"/>);
+            hearts.push(<img src={heart} key={i} className="heart"/>);
     }
     return (
         <div>
@@ -256,6 +246,7 @@ function Game(props) {
             </div>
             <h1 className="title">איזו עיר יותר קרובה?</h1><br></br>
             {jsx}
+            <ConfettiComponent width={props.width} height={props.height} run={confetti} />
         </div>
     )
 }
