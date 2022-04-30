@@ -6,22 +6,40 @@ import heart from '../data/heart.png';
 import { useState, useEffect } from 'react'
 import { calcCrow, timerHTML } from '../modules/Calculators';
 import { GetSettlement } from '../modules/Settlements'
-import ConfettiComponent from './confetti';
-
-// Modules
+import { useReward } from 'react-rewards';
 
 function Game(props) {
-    // Game related states
-    const [time, setTime] = useState(0);
+    // Meta game related states
     const [streak, setStreak] = useState(parseInt(props.cookies["Score"]));
+    const [time, setTime] = useState(0);
+    const [health, setHealth] = useState(props.isHealth ? 3 : 1);
+        
+    // Game related states
     const [pause, setPause] = useState(false);
     const [pairs, setPairs] = useState([]);
     const [lastSettlements, setLastSetts] = useState([null]);
     const [settlements, setSettlements] = useState(GetSettlement([null], streak, lastSettlements, props.minPop, pairs));
     const [choice, setChoice] = useState(0);
     const [correct, setCorrect] = useState(true);
-    const [health, setHealth] = useState(props.isHealth ? 3 : 1);
-    const [confetti, setConfetti] = useState(0);
+
+    // Aesthetics related states
+    let rewardConfigConfetti = {
+        lifetime: 100,
+        spread: 150,
+        zIndex: -1,
+        decay: 0.95,
+    }
+    let rewardConfigBalloons = {
+        lifetime: 200,
+        spread: 100,
+        startVelocity: 5,
+        elementCount: 50,
+        zIndex: -1,
+        decay: 0.999,
+    }
+    const { reward: rewardConfetti, isAnimating: isAnimatingC } = useReward('rewardId', 'confetti', rewardConfigConfetti);
+    const { reward: rewardBalloons, isAnimating: isAnimatingB } = useReward('rewardId', 'balloons', rewardConfigBalloons);
+
 
     useEffect(() => {
         if (props.timerEnabled || props.isMultiplayer){
@@ -49,29 +67,38 @@ function Game(props) {
         props.setIsActive(false);
         setChoice(choice);
 
+        let reward = () => {rewardConfetti()};
+        if ((streak+1) % 10 == 0){
+            reward = () => {rewardBalloons()};
+        }
+
         setCorrect(true)
-        setConfetti(confetti+50);
         if (choice == 1 && settlements[1] == 1) {
             setStreak(streak + 1);
+            reward();
         }
         else if (choice == 2 && settlements[1] == 2) {
             setStreak(streak + 1);
+            reward();
         }
         else if (choice == 3 && settlements[1] == 3) {
             setStreak(streak + 1);
+            reward();
         }
         else if (choice == 4 && settlements[1] == 4) {
             setStreak(streak + 1);
+            reward();
         }
         else if (choice == 5 && settlements[1] == 5) {
             setStreak(streak + 1);
+            reward();
         }
         else if (choice == 6 && settlements[1] == 6) {
             setStreak(streak + 1);
+            reward();
         }
         else {
             setCorrect(false);
-            setConfetti(confetti-50);
         }
 
         setPause(true);
@@ -189,7 +216,7 @@ function Game(props) {
             indicatorSentence = settlements[0][choice].cityLabel+" היא תשובה "+ answer;
         else
             indicatorSentence = "נגמר הזמן.";
-        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel}.. <br></br>{sentence}</h1><br></br> <div className="h1button"><h1>המשך</h1></div></div>) : (<div className="h1button"><h1>המשך</h1></div>)
+        let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel} <br></br>{sentence}</h1><br></br> <div className="h1button"><h1>המשך</h1></div></div>) : (<div className="h1button"><h1>המשך</h1></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
                 <p className="streak">{highscore} <br></br>  ניקוד:  {streak}</p>
@@ -239,6 +266,7 @@ function Game(props) {
         for (let i = 0; i < health; i++)
             hearts.push(<img src={heart} key={i} className="heart"/>);
     }
+    
     return (
         <div>
             <div className="heartDiv">
@@ -246,7 +274,7 @@ function Game(props) {
             </div>
             <h1 className="title">איזו עיר יותר קרובה?</h1><br></br>
             {jsx}
-            <ConfettiComponent width={props.width} height={props.height} run={confetti} />
+            <span id="rewardId" style={{width: 2, height: 2, background: "red"}}/>
         </div>
     )
 }

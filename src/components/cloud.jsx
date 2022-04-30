@@ -7,16 +7,16 @@ import { RandInt } from '../modules/Calculators';
 import { useEffect, useState } from 'react'
 
 function Cloud(props){
-    const [cloudPosY, setCloudPosY] = useState(parseInt(props.y_offset));
+    const [cloudPosY, setCloudPosY] = useState(0);
 
     useEffect(()=>{
         let interval = null;
 
 		interval = setInterval(() => {
-				if (cloudPosY == 0+parseInt(props.y_offset))
-					setCloudPosY(15+parseInt(props.y_offset));
+				if (cloudPosY == 0)
+					setCloudPosY(15);
 				else
-					setCloudPosY(0+parseInt(props.y_offset));
+					setCloudPosY(0);
 					
             }, RandInt(200)+900);
 		
@@ -29,8 +29,14 @@ function Cloud(props){
     if (props.big)
         cloudImg = bigCloud;
 
+    const styles = {
+            top: props.y_offset,
+            right: props.x_offset,
+            transform: "scale("+props.size+") translateY("+cloudPosY+"px)"
+        };
+        
     return (
-        <div style={{transform: "scale("+props.size+") translateY("+cloudPosY+"px) translateX("+props.x_offset+"px)"}} className="cloud">
+        <div style={styles} className="cloud">
             <img src={cloudImg}></img>
         </div>
     );
