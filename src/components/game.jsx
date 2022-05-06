@@ -219,7 +219,10 @@ function Game(props) {
         let moreInfo = props.showInfo ? (<div><h1 className={information}>{settlements[0][0].cityLabel} <br></br>{sentence}</h1><br></br> <div className="h1button"><h1>המשך</h1></div></div>) : (<div className="h1button"><h1>המשך</h1></div>)
         jsx = (
             <div onClick={() => { nextRound() }}>
-                <p className="streak">{highscore} <br></br>  ניקוד:  {streak}</p>
+                <div className="streak">
+                    <p>הניקוד הכי גבוה: {parseInt(props.cookies["Highscore"])}</p>
+                    <p>ניקוד: {streak}</p>
+                </div>
                 <div className='wrapperPause center'>
                     <p className={indicator}>{indicatorSentence}</p>
                     {moreInfo}
@@ -242,7 +245,10 @@ function Game(props) {
         thirdClass += " h1button";
 
         jsx = (<div>
-            <p className="streak">ניקוד: {streak}</p>
+            <div className="streak">
+                <p>הניקוד הכי גבוה: {parseInt(props.cookies["Highscore"])}</p>
+                <p>ניקוד: {streak}</p>
+            </div>
             {timerHTML(props.timerEnabled || props.isMultiplayer, time)}
             <h1 className="titleCity">איזו עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
             <div className={wrapper}>
@@ -272,7 +278,7 @@ function Game(props) {
             <div className="heartDiv">
                 {hearts}
             </div>
-            <h1 className="title">איזו עיר יותר קרובה?</h1><br></br>
+            <h1 className="title">איזה יישוב יותר קרוב?</h1><br></br>
             {jsx}
             <span id="rewardId" style={{width: 2, height: 2, background: "red"}}/>
         </div>

@@ -1,5 +1,4 @@
 // Components
-import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import Switch from 'react-switch/dist/react-switch.dev.js'
 
@@ -90,44 +89,13 @@ function Menu(props) {
         if (props.cookies["streak"] > 0)
             mode = "המשך משחק לבד (ניקוד: " + props.cookies["streak"] + ")";
 
-        if (!props.isMultiplayer){
             return (
                 <div>
                     <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
                     <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
                     <div className="h1button" ><h1  onClick={() => { props.startGame() }}> {mode}</h1></div><br></br>
-                    <div className="h1button nohover" ><h1 className="smallText"> משחק רב משתתפים (בקרוב..) </h1></div>{/*onClick={() => { props.startMultiplayer() }}*/}
                 </div>
             );
-        }
-        else{
-            if (!props.waitingRoom){
-            return (
-                <div>
-                    <img src={closeLogo} className="closeImage" onClick={() => { props.setIsMultiplayer(false) }}></img>
-                    <h1 className="menuTitle ">משחק רב משתתפים</h1><br></br>
-                    שם:<br></br>
-                    <input type="text" onChange={(event) => { props.setUsername(event.target.value) }}></input><br></br>
-                    חדר:<br></br>
-                    <input type="text" onChange={(event) => { props.setRoom(event.target.value) }}></input><br></br>
-                    <Button className="startButton" variant="outlined" onClick={() => { props.joinRoom() }}> התחבר </Button>
-                </div>
-                );
-            }
-            else{
-            let list;
-            if (props.users < 2)
-                list = "מחכים לשחקן נוסף"+props.dots;
-            
-            return (
-                <div>
-                    <h1 className="menuTitle ">חדר המתנה</h1><br></br>
-                    {list}<br></br>
-                    {props.users}/2<br></br>
-                </div>
-            )
-            }
-        }
 
     }
 }
