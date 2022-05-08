@@ -250,7 +250,7 @@ function Game(props) {
                 <p>ניקוד: {streak}</p>
             </div>
             {timerHTML(props.timerEnabled || props.isMultiplayer, time)}
-            <h1 className="titleCity">איזו עיר יותר קרובה ל:<br></br> {settlements[0][0].cityLabel}</h1>
+            <h1 className="titleCity">איזה יישוב יותר קרוב ל:<br></br> {settlements[0][0].cityLabel}</h1>
             <div className={wrapper}>
                 <div className={firstClass}>
                     <h1 onClick={() => { Choice(1) }}>{settlements[0][1].cityLabel}  </h1><br></br>

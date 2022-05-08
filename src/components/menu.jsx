@@ -92,7 +92,7 @@ function Menu(props) {
             return (
                 <div>
                     <img src={settingsLogo} className="settingsImage" onClick={() => { setSettings(!settings) }}></img>
-                    <h1 className="menuTitle">איזו עיר יותר קרובה?</h1><br></br>
+                    <h1 className="menuTitle">איזה יישוב יותר קרוב?</h1><br></br>
                     <div className="h1button" ><h1  onClick={() => { props.startGame() }}> {mode}</h1></div><br></br>
                 </div>
             );

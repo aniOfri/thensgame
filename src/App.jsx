@@ -37,28 +37,6 @@ function App() {
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
 
-  // TEMPORARY
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
-  const [isMultiplayer, setIsMultiplayer] = useState(false);
-  const [waitingRoom, setWaitingRoom] = useState(false);
-  const [users, setUsers] = useState(0);
-  const [host, setHost] = useState(false);
-  const [dots, setDots] = useState(".");
-
-  const socket = useContext(SocketContext);
-  
-  async function joinRoom(){
-    if (username !== "" && room !== ""){
-      const data = {
-        name: username,
-        room: room
-      }
-      await socket.emit("join_room", data);
-      setWaitingRoom(true);
-    }
-  }
-
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
@@ -70,68 +48,6 @@ function App() {
           window.removeEventListener('resize', handleWindowSizeChange);
       }
   }, []);
-
-  useEffect(() => {
-    let interval = null;
-
-    if (waitingRoom && users == 0) {
-        interval = setInterval(() => {
-            if (dots == ".")
-              setDots("..");
-            else if (dots == "..")
-              setDots("...");
-            else
-              setDots(".");
-              
-        }, 1000);
-    } else {
-          interval = setInterval(() => {
-            if (dots == ".")
-              setDots("..");
-            else if (dots == "..")
-              setDots("...");
-        }, 1000);
-        clearInterval(interval);
-    }
-    return () => {
-        clearInterval(interval);
-    };
-  }, [waitingRoom, dots]);
-
-  useEffect(()=>{
-    if (isMultiplayer){
-      if (users == 0){
-        socket.emit("request_users", room);
-      }
-
-      const handleUsers = (data) => {
-        setUsers(data);
-      }
-      
-      socket.on("current_users", handleUsers);
-
-      return () => {
-        socket.off("current_users", handleUsers)
-      }
-    }
-  }, [socket]);
-
-  /*useEffect(()=>{
-    return async () =>{
-        if (users == 0 && isMultiplayer)
-          await socket.emit("request_users", room);
-    }
-  }, [socket, dots]);*/
-
-  useEffect(()=>{
-    if (isMultiplayer)  {
-      if (users == 1)
-        setHost(true);
-      else if (users == 2)
-      startGame();
-    }   
-  }, [users, dots]);
-
   function startMultiplayer(){
     setIsMultiplayer(true);
   }
@@ -144,9 +60,9 @@ function App() {
   }
   
   let jsx;
-  if (menu) jsx = (<Menu isHealth={isHealth} setIsHealth={setIsHealth} users={users} dots={dots} cookies={COOKIES} waitingRoom={waitingRoom} setUsername={setUsername} setRoom={setRoom} joinRoom={joinRoom} isMultiplayer={isMultiplayer} setIsMultiplayer={setIsMultiplayer} setShowInfo={setShowInfo} startMultiplayer={startMultiplayer} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
+  if (menu) jsx = (<Menu isHealth={isHealth} setIsHealth={setIsHealth} cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} setMinPop={setMinPop} minPop={minPop} setTimerEnabled={setTimerEnabled} timerEnabled={timerEnabled} startGame={startGame} />)
   else
-    jsx = (<Game width={width} height={height} isHealth={isHealth} cookies={COOKIES} isMultiplayer={isMultiplayer} room={room} socket={socket} host={host} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
+    jsx = (<Game width={width} height={height} isHealth={isHealth} cookies={COOKIES} setShowInfo={setShowInfo} showInfo={showInfo} minPop={minPop} isActive={isActive} timerEnabled={timerEnabled} setIsActive={setIsActive} setMenu={setMenu} />)
 
   return (
     <div dir="rtl" className="App">
